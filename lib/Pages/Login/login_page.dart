@@ -190,7 +190,8 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        // Handle forgot password logic here
+                        // Navigate to forgot password page
+                        Navigator.pushNamed(context, AppRoutes.forgot);
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -240,7 +241,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Handle navigation to register page
+                          // Navigate to register page
+                          Navigator.pushReplacementNamed(context, AppRoutes.register);
                         },
                         child: const Text(
                           "Register",
