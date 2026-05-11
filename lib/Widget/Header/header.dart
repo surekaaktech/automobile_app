@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../Routes/app_routes.dart';
 
 class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
   const CustomHeader({super.key});
@@ -33,7 +34,9 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(bottom: 8.0),
           child: IconButton(
             icon: const Icon(Icons.menu, color: Colors.white, size: 28),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.menu);
+            },
           ),
         ),
         const SizedBox(width: 8),
