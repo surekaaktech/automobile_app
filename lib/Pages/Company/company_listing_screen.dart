@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../Widget/Footer/footer.dart';
 import 'company_compare_screen.dart';
+import 'business_details_screen.dart';
+import '../../State/favorites_state.dart';
+import '../Favorite/favorite_screen.dart';
+import '../Profile/profile_screen.dart';
 
 class CompanyListingScreen extends StatefulWidget {
   final String categoryName;
@@ -56,150 +60,169 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
   Widget _buildCompanyCard(Map<String, dynamic> company) {
     final bool isSelected = _selectedCompanies.contains(company["id"]);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BusinessDetailsScreen(company: company),
           ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Image Placeholder
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(8),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.shade300),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.02),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-          ),
-          const SizedBox(width: 16),
-          
-          // Details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  company["name"],
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0C1427),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image Placeholder
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            const SizedBox(width: 16),
+
+            // Details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    company["name"],
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0C1427),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  company["category"],
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey,
+                  const SizedBox(height: 4),
+                  Text(
+                    company["category"],
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.location_on_outlined, size: 14, color: Colors.grey),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        company["location"],
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.location_on_outlined, size: 14, color: Colors.grey),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          company["location"],
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, size: 16, color: Color(0xFF222845)),
+                      const SizedBox(width: 4),
+                      Text(
+                        company["rating"],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                          color: Color(0xFF0C1427),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        company["distance"],
                         style: const TextStyle(
                           fontSize: 13,
                           color: Colors.grey,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Icon(Icons.star, size: 16, color: Color(0xFF222845)),
-                    const SizedBox(width: 4),
-                    Text(
-                      company["rating"],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                        color: Color(0xFF0C1427),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      company["distance"],
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    if (company["isOpen"])
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF222845),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Text(
-                          "Open",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
+                      const SizedBox(width: 12),
+                      if (company["isOpen"])
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF222845),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Text(
+                            "Open",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                  ],
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // Trailing Icons
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      FavoritesState.toggleFavorite(company);
+                    });
+                  },
+                  icon: Icon(
+                    FavoritesState.isFavorite(company["id"]) ? Icons.favorite : Icons.favorite_border,
+                    color: const Color(0xFF0C1427),
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (isSelected) {
+                        _selectedCompanies.remove(company["id"]);
+                      } else {
+                        _selectedCompanies.add(company["id"]);
+                      }
+                    });
+                  },
+                  child: Container(
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      color: isSelected ? const Color(0xFF0066CC) : Colors.white,
+                      border: Border.all(color: isSelected ? const Color(0xFF0066CC) : Colors.grey.shade400),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: isSelected ? const Icon(Icons.check, size: 16, color: Colors.white) : null,
+                  ),
                 ),
               ],
             ),
-          ),
-          
-          // Trailing Icons
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Icon(Icons.favorite_border, color: Color(0xFF0C1427), size: 20),
-              const SizedBox(height: 24),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    if (isSelected) {
-                      _selectedCompanies.remove(company["id"]);
-                    } else {
-                      _selectedCompanies.add(company["id"]);
-                    }
-                  });
-                },
-                child: Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xFF0066CC) : Colors.white,
-                    border: Border.all(color: isSelected ? const Color(0xFF0066CC) : Colors.grey.shade400),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: isSelected 
-                    ? const Icon(Icons.check, size: 16, color: Colors.white)
-                    : null,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -259,6 +282,22 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
               ),
               child: ElevatedButton(
                 onPressed: () {
+                  if (_selectedCompanies.length < 2) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Compare Companies"),
+                        content: const Text("Please select at least 2 companies to compare."),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text("OK"),
+                          ),
+                        ],
+                      ),
+                    );
+                    return;
+                  }
                   final selected = _companies
                       .where((c) => _selectedCompanies.contains(c["id"]))
                       .toList();
@@ -294,6 +333,16 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
             onTap: (index) {
               if (index == 0) {
                 Navigator.of(context).popUntil((route) => route.isFirst);
+              } else if (index == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FavoriteScreen()),
+                ).then((_) => setState(() {}));
+              } else if (index == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                ).then((_) => setState(() {}));
               } else {
                 setState(() {
                   _currentIndex = index;
@@ -421,7 +470,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
               const SizedBox(height: 16),
 
               // Render Companies
-              ..._companies.map((company) => _buildCompanyCard(company)).toList(),
+              ..._companies.map((company) => _buildCompanyCard(company)),
             ],
           ),
         ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../Widget/Header/header.dart';
 import '../../Widget/Footer/footer.dart';
 import '../Subcategory/subcategory_screen.dart';
+import '../Profile/profile_screen.dart';
+import '../Favorite/favorite_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,9 +16,24 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (index == 1) {
+      // Favorite is now handled by index 1 in my logic, but the footer still says 'Emergency'.
+      // If the user wants to use index 1 for Favorites, I'll add that.
+      // But for now, let's just stick to the Profile navigation requested.
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const FavoriteScreen()),
+      ).then((_) => setState(() {}));
+    } else if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfileScreen()),
+      ).then((_) => setState(() {}));
+    } else {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 
   @override

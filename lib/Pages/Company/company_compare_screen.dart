@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../Widget/Footer/footer.dart';
+import '../Profile/profile_screen.dart';
+import '../Favorite/favorite_screen.dart';
 
 class CompanyCompareScreen extends StatefulWidget {
   final List<Map<String, dynamic>> companies;
@@ -57,6 +59,16 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
         onTap: (index) {
           if (index == 0) {
             Navigator.of(context).popUntil((route) => route.isFirst);
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const FavoriteScreen()),
+            ).then((_) => setState(() {}));
+          } else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            ).then((_) => setState(() {}));
           } else {
             setState(() {
               _currentIndex = index;
@@ -215,16 +227,18 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
         content = Text(company["location"] ?? "N/A", maxLines: 3, overflow: TextOverflow.ellipsis);
         break;
       case "Action":
-        content = ElevatedButton(
+        content = ElevatedButton.icon(
           onPressed: () {},
+          icon: const Icon(Icons.phone, size: 16),
+          label: const Text("Call Now"),
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF222845),
             foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-          child: const Text("Book Now"),
         );
         break;
       default:

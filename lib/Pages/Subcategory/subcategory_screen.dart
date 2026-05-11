@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../Widget/Footer/footer.dart';
 import '../Company/company_listing_screen.dart';
+import '../Profile/profile_screen.dart';
+import '../Favorite/favorite_screen.dart';
 
 class SubcategoryScreen extends StatefulWidget {
   final String categoryName;
@@ -92,12 +94,21 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
         currentIndex: _currentIndex,
         onTap: (index) {
           if (index == 0) {
-            Navigator.pop(context); // Go back to Home
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const FavoriteScreen()),
+            ).then((_) => setState(() {}));
+          } else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            ).then((_) => setState(() {}));
           } else {
             setState(() {
               _currentIndex = index;
             });
-            // Handle other tab navigation here if needed
           }
         },
       ),
