@@ -6,4 +6,5 @@ abstract class AppRoutes {
   static const String emergency = '/emergency';
   static const String laws = '/laws';
   static const String profile = '/profile';
+  static const String menu = '/menu';
 }
