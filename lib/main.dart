@@ -24,9 +24,21 @@ class AutomobileApp extends StatelessWidget {
           background: const Color(0xFFF8F9FA),
         ),
         textTheme: const TextTheme(
-          displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
-          headlineMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
-          titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
+          displayLarge: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1A1A1A),
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1A1A1A),
+          ),
+          titleLarge: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1A1A1A),
+          ),
           bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF4A4A4A)),
           bodyMedium: TextStyle(fontSize: 14, color: Color(0xFF4A4A4A)),
         ),
@@ -37,7 +49,7 @@ class AutomobileApp extends StatelessWidget {
           centerTitle: false,
         ),
       ),
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.login,
       routes: AppPages.routes,
     );
   }

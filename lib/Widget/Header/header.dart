@@ -8,6 +8,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: const Color(0xFF955BFF), // Purple color matching the image
       elevation: 0,
+      automaticallyImplyLeading: false, // Removes the back arrow
       centerTitle: false,
       toolbarHeight: 70, // Increased toolbar height
       title: Padding(
