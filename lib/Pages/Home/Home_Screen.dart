@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../Widget/Header/header.dart';
 import '../../Widget/Footer/footer.dart';
+import '../Subcategory/subcategory_screen.dart';
+import '../Profile/profile_screen.dart';
+import '../Favorite/favorite_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,9 +16,24 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (index == 1) {
+      // Favorite is now handled by index 1 in my logic, but the footer still says 'Emergency'.
+      // If the user wants to use index 1 for Favorites, I'll add that.
+      // But for now, let's just stick to the Profile navigation requested.
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const FavoriteScreen()),
+      ).then((_) => setState(() {}));
+    } else if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfileScreen()),
+      ).then((_) => setState(() {}));
+    } else {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 
   @override
@@ -173,37 +191,49 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         itemCount: categories.length,
         itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.grey.withOpacity(0.1)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF7C4DFF),
-                    shape: BoxShape.circle,
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubcategoryScreen(
+                    categoryName: categories[index]["label"] as String,
                   ),
-                  child: Icon(categories[index]["icon"] as IconData, color: Colors.white, size: 24),
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  categories[index]["label"] as String,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.03),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF7C4DFF),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(categories[index]["icon"] as IconData, color: Colors.white, size: 24),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    categories[index]["label"] as String,
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           );
         },
