@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Pages/Home/Home_Screen.dart';
+import 'Routes/app_pages.dart';
+import 'Routes/app_routes.dart';
 
 void main() {
   runApp(const AutomobileApp());
@@ -36,7 +37,8 @@ class AutomobileApp extends StatelessWidget {
           centerTitle: false,
         ),
       ),
-      home: const HomeScreen(),
+      initialRoute: AppRoutes.home,
+      routes: AppPages.routes,
     );
   }
 }

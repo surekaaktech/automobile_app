@@ -1,23 +1,50 @@
 import 'package:flutter/material.dart';
+import '../../Widget/Header/header.dart';
+import '../../Widget/Footer/footer.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return _buildMainLayout(context, constraints.maxWidth);
-        },
+      appBar: const CustomHeader(),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return _buildMainLayout(context, constraints.maxWidth);
+            },
+          ),
+          const Center(child: Text("Emergency Screen", style: TextStyle(fontSize: 24))),
+          const Center(child: Text("Laws Screen", style: TextStyle(fontSize: 24))),
+          const Center(child: Text("Profile Screen", style: TextStyle(fontSize: 24))),
+        ],
+      ),
+      bottomNavigationBar: CustomFooter(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
 
   Widget _buildMainLayout(BuildContext context, double maxWidth) {
     int fuelGridCount = maxWidth > 600 ? 2 : 1;
-    int genericGridCount = maxWidth > 600 ? 3 : 2; // For launches and categories
 
     return CustomScrollView(
       slivers: [
@@ -25,6 +52,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 16), // Space between header and HeroBanner
               _buildHeroBanner(context, height: maxWidth > 600 ? 300 : 240),
               _buildCategoryHeader(context, "Fuel Prices Today"),
               _buildFuelPriceGrid(context, crossAxisCount: maxWidth > 600 ? 4 : 2),
@@ -44,17 +72,12 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildHeroBanner(BuildContext context, {required double height}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0), // Side margins for better floating look
       height: height,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(24),
-          bottomRight: Radius.circular(24),
-        ),
+        borderRadius: BorderRadius.circular(24),
         gradient: const LinearGradient(
           colors: [Color(0xFF1A1A1A), Color(0xFF4A4A4A)],
           begin: Alignment.topLeft,
@@ -71,10 +94,7 @@ class HomeScreen extends StatelessWidget {
       child: Stack(
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(24),
-              bottomRight: Radius.circular(24),
-            ),
+            borderRadius: BorderRadius.circular(24),
             child: Opacity(
               opacity: 0.6,
               child: Image.network(
@@ -498,8 +518,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildFuelPriceGrid(BuildContext context, {required int crossAxisCount}) {
     final fuelData = [
       {"label": "Petrol", "price": "₹102.63", "change": "-0.5 ₹/L", "isDown": true},
@@ -517,7 +535,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisCount: crossAxisCount,
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          childAspectRatio: crossAxisCount > 2 ? 1.4 : 1.5,
+          childAspectRatio: crossAxisCount > 2 ? 1.0 : 1.3,
         ),
         itemCount: fuelData.length,
         itemBuilder: (context, index) {
@@ -525,7 +543,7 @@ class HomeScreen extends StatelessWidget {
           final isDown = data["isDown"] as bool?;
           
           return Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: const Color(0xFF303F9F),
               borderRadius: BorderRadius.circular(20),
@@ -537,42 +555,46 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  data["label"] as String,
-                  style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  data["price"] as String,
-                  style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    if (isDown != null)
-                      Icon(
-                        isDown ? Icons.south_west : Icons.north_east,
-                        color: isDown ? Colors.greenAccent : Colors.redAccent,
-                        size: 14,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    data["label"] as String,
+                    style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    data["price"] as String,
+                    style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      if (isDown != null)
+                        Icon(
+                          isDown ? Icons.south_west : Icons.north_east,
+                          color: isDown ? Colors.greenAccent : Colors.redAccent,
+                          size: 14,
+                        ),
+                      const SizedBox(width: 4),
+                      Text(
+                        data["change"] as String,
+                        style: TextStyle(
+                          color: isDown == null 
+                              ? Colors.white54 
+                              : (isDown ? Colors.greenAccent : Colors.redAccent),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    const SizedBox(width: 4),
-                    Text(
-                      data["change"] as String,
-                      style: TextStyle(
-                        color: isDown == null 
-                            ? Colors.white54 
-                            : (isDown ? Colors.greenAccent : Colors.redAccent),
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },
