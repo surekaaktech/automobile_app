@@ -18,7 +18,7 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
   late List<Map<String, dynamic>> _reviews;
   late double _averageRating;
   late int _reviewCount;
-  int _currentIndex = 0;
+  int _currentIndex = -1;
 
   @override
   void initState() {
@@ -54,12 +54,13 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
           builder: (context, setDialogState) {
             return Dialog(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -78,13 +79,27 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      "Rating",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF0C1427),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Rating",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF0C1427),
+                          ),
+                        ),
+                        if (localRating > 0)
+                          Text(
+                            "$localRating.0 / 5.0",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF222845),
+                            ),
+                          ),
+                      ],
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -116,7 +131,7 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
                     const SizedBox(height: 8),
                     TextField(
                       controller: localCommentController,
-                      maxLines: 4,
+                      maxLines: 3,
                       decoration: InputDecoration(
                         hintText: "Tell us about your experience...",
                         hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
@@ -173,6 +188,7 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
                   ],
                 ),
               ),
+              ),
             );
           },
         );
@@ -185,17 +201,26 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        toolbarHeight: 80,
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.arrow_back, color: Color(0xFF0C1427)),
+          child: Container(
+            margin: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF3EDFF),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(Icons.arrow_back, color: Color(0xFF4A5578), size: 24),
+          ),
         ),
         title: const Text(
           'Business Details',
           style: TextStyle(
             color: Color(0xFF0C1427),
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -209,25 +234,6 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
       ),
       bottomNavigationBar: CustomFooter(
         currentIndex: _currentIndex,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.of(context).popUntil((route) => route.isFirst);
-          } else if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const FavoriteScreen()),
-            ).then((_) => setState(() {}));
-          } else if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfileScreen()),
-            ).then((_) => setState(() {}));
-          } else {
-            setState(() {
-              _currentIndex = index;
-            });
-          }
-        },
       ),
       body: SafeArea(
         child: SingleChildScrollView(

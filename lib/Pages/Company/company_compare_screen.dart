@@ -13,7 +13,7 @@ class CompanyCompareScreen extends StatefulWidget {
 }
 
 class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +32,26 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        toolbarHeight: 80,
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.arrow_back, color: Color(0xFF0C1427)),
+          child: Container(
+            margin: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF3EDFF),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(Icons.arrow_back, color: Color(0xFF4A5578), size: 24),
+          ),
         ),
         title: const Text(
           'Compare Services',
           style: TextStyle(
             color: Color(0xFF0C1427),
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -56,36 +65,22 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
       ),
       bottomNavigationBar: CustomFooter(
         currentIndex: _currentIndex,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.of(context).popUntil((route) => route.isFirst);
-          } else if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const FavoriteScreen()),
-            ).then((_) => setState(() {}));
-          } else if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfileScreen()),
-            ).then((_) => setState(() {}));
-          } else {
-            setState(() {
-              _currentIndex = index;
-            });
-          }
-        },
       ),
       body: SafeArea(
-        child: widget.companies.isEmpty
-            ? const Center(child: Text("No companies selected for comparison."))
-            : SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: _buildComparisonTable(bestCompanyId),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 40.0),
+          child: widget.companies.isEmpty
+              ? const Center(child: Text("No companies selected for comparison."))
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: _buildComparisonTable(bestCompanyId),
+                    ),
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -145,12 +140,15 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
   Widget _buildTableCell(String text, {bool isHeader = false, bool isFeatureCol = false}) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontWeight: isHeader || isFeatureCol ? FontWeight.bold : FontWeight.normal,
-          fontSize: isHeader ? 16 : 14,
-          color: isFeatureCol ? Colors.grey.shade700 : const Color(0xFF0C1427),
+      child: Center(
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: isHeader || isFeatureCol ? FontWeight.bold : FontWeight.normal,
+            fontSize: isHeader ? 16 : 14,
+            color: isFeatureCol ? Colors.grey.shade700 : const Color(0xFF0C1427),
+          ),
         ),
       ),
     );
@@ -247,8 +245,7 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
 
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: Align(
-        alignment: Alignment.centerLeft,
+      child: Center(
         child: content,
       ),
     );

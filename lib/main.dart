@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'Routes/app_pages.dart';
 import 'Routes/app_routes.dart';
 
@@ -11,7 +12,7 @@ class AutomobileApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'AutoApp - Premium Car Services',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -49,8 +50,8 @@ class AutomobileApp extends StatelessWidget {
           centerTitle: false,
         ),
       ),
-      initialRoute: AppRoutes.login,
-      routes: AppPages.routes,
+      initialRoute: AppPages.initial,
+      getPages: AppPages.routes,
     );
   }
 }

@@ -35,19 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       bottomNavigationBar: CustomFooter(
         currentIndex: _currentIndex,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.of(context).popUntil((route) => route.isFirst);
-          } else if (index == 1) {
-            // Emergency or something else - not implemented yet
-          } else if (index == 3) {
-            // Already here
-          } else {
-            setState(() {
-              _currentIndex = index;
-            });
-          }
-        },
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

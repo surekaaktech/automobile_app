@@ -21,7 +21,7 @@ class CompanyListingScreen extends StatefulWidget {
 }
 
 class _CompanyListingScreenState extends State<CompanyListingScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = -1;
   final TextEditingController _searchController = TextEditingController();
 
   final List<String> _filters = ["All", "Nearby", "Top rated", "Open now"];
@@ -29,6 +29,49 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
 
   // State to track selected companies for comparison
   final Set<int> _selectedCompanies = {};
+  List<Map<String, dynamic>> _filteredCompanies = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredCompanies = _companies;
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    _applyFilters();
+  }
+
+  void _applyFilters() {
+    setState(() {
+      _filteredCompanies = _companies.where((company) {
+        final name = company["name"].toString().toLowerCase();
+        final query = _searchController.text.toLowerCase();
+        final matchesSearch = name.contains(query);
+
+        if (_selectedFilter == "All") return matchesSearch;
+        if (_selectedFilter == "Top rated") {
+          return matchesSearch && double.parse(company["rating"]) >= 4.5;
+        }
+        if (_selectedFilter == "Open now") {
+          return matchesSearch && company["isOpen"] == true;
+        }
+        if (_selectedFilter == "Nearby") {
+          // Mock nearby logic: distance < 3km
+          final dist = double.parse(company["distance"].split(' ')[0]);
+          return matchesSearch && dist < 3.0;
+        }
+        return matchesSearch;
+      }).toList();
+    });
+  }
 
   final List<Map<String, dynamic>> _companies = [
     {
@@ -51,11 +94,6 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
     },
   ];
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   Widget _buildCompanyCard(Map<String, dynamic> company) {
     final bool isSelected = _selectedCompanies.contains(company["id"]);
@@ -71,7 +109,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -89,14 +127,14 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
           children: [
             // Image Placeholder
             Container(
-              width: 60,
-              height: 60,
+              width: 72,
+              height: 72,
               decoration: BoxDecoration(
                 color: Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 20),
 
             // Details
             Expanded(
@@ -106,20 +144,20 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                   Text(
                     company["name"],
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF0C1427),
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
                   Text(
                     company["category"],
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 14,
                       color: Colors.grey,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
                   Row(
                     children: [
                       const Icon(Icons.location_on_outlined, size: 14, color: Colors.grey),
@@ -138,19 +176,26 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Row(
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 12,
+                    runSpacing: 8,
                     children: [
-                      const Icon(Icons.star, size: 16, color: Color(0xFF222845)),
-                      const SizedBox(width: 4),
-                      Text(
-                        company["rating"],
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13,
-                          color: Color(0xFF0C1427),
-                        ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.star, size: 16, color: Color(0xFF222845)),
+                          const SizedBox(width: 4),
+                          Text(
+                            company["rating"],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              color: Color(0xFF0C1427),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 12),
                       Text(
                         company["distance"],
                         style: const TextStyle(
@@ -158,7 +203,6 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                           color: Colors.grey,
                         ),
                       ),
-                      const SizedBox(width: 12),
                       if (company["isOpen"])
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -232,6 +276,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        toolbarHeight: 80,
         backgroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: false,
@@ -242,10 +287,17 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
               onTap: () {
                 Navigator.pop(context); // Go back to subcategory screen
               },
-              child: const Icon(
-                Icons.arrow_back,
-                color: Color(0xFF0C1427),
-                size: 24,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF3EDFF),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFF4A5578),
+                  size: 24,
+                ),
               ),
             ),
             Expanded(
@@ -254,12 +306,12 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Color(0xFF0C1427),
-                  fontSize: 18,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            const SizedBox(width: 24), // Invisible placeholder to balance the back arrow
+            const SizedBox(width: 44), // Invisible placeholder to balance the back arrow
           ],
         ),
         bottom: PreferredSize(
@@ -330,25 +382,6 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
           // Show the CustomFooter below the compare button
           CustomFooter(
             currentIndex: _currentIndex,
-            onTap: (index) {
-              if (index == 0) {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              } else if (index == 1) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const FavoriteScreen()),
-                ).then((_) => setState(() {}));
-              } else if (index == 3) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                ).then((_) => setState(() {}));
-              } else {
-                setState(() {
-                  _currentIndex = index;
-                });
-              }
-            },
           ),
         ],
       ),
@@ -400,6 +433,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                               onTap: () {
                                 setState(() {
                                   _selectedFilter = filter;
+                                  _applyFilters();
                                 });
                               },
                               child: Container(
@@ -461,7 +495,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
 
               // Results Count
               Text(
-                '${_companies.length} results near Chennai',
+                '${_filteredCompanies.length} results near Chennai',
                 style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 14,
@@ -470,7 +504,15 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
               const SizedBox(height: 16),
 
               // Render Companies
-              ..._companies.map((company) => _buildCompanyCard(company)),
+              if (_filteredCompanies.isEmpty)
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 40),
+                    child: Text("No results found"),
+                  ),
+                )
+              else
+                ..._filteredCompanies.map((company) => _buildCompanyCard(company)),
             ],
           ),
         ),

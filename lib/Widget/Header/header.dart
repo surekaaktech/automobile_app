@@ -36,7 +36,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
           child: IconButton(
             icon: const Icon(Icons.menu, color: Colors.white, size: 28),
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.menu);
+              Scaffold.of(context).openEndDrawer();
             },
           ),
         ),

@@ -14,7 +14,7 @@ class SubcategoryScreen extends StatefulWidget {
 }
 
 class _SubcategoryScreenState extends State<SubcategoryScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -44,26 +44,27 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        toolbarHeight: 80,
         backgroundColor: Colors.white,
         elevation: 0,
-        automaticallyImplyLeading: false, // We will build a custom leading button
+        automaticallyImplyLeading: false,
         titleSpacing: 16,
         title: Row(
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.pop(context); // Moves back to the home screen
+                Navigator.pop(context);
               },
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF3EDFF), // Light purple background
+                  color: const Color(0xFFF3EDFF),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(
                   Icons.arrow_back,
-                  color: Color(0xFF4A5578), // Darker icon color
-                  size: 20,
+                  color: Color(0xFF4A5578),
+                  size: 24,
                 ),
               ),
             ),
@@ -73,13 +74,12 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Color(0xFF0C1427),
-                  fontSize: 18,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            // Invisible placeholder to keep text centered
-            const SizedBox(width: 36), 
+            const SizedBox(width: 44), 
           ],
         ),
         bottom: PreferredSize(
@@ -90,51 +90,13 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: CustomFooter(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.of(context).popUntil((route) => route.isFirst);
-          } else if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const FavoriteScreen()),
-            ).then((_) => setState(() {}));
-          } else if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfileScreen()),
-            ).then((_) => setState(() {}));
-          } else {
-            setState(() {
-              _currentIndex = index;
-            });
-          }
-        },
-      ),
+      bottomNavigationBar: const CustomFooter(),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 100.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Powered By text container
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF8F9FA),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text(
-                  "Powered by Yellow Pages",
-                  style: TextStyle(
-                    color: Color(0xFF6C757D),
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-
               // Subcategory List
               ListView.separated(
                 shrinkWrap: true,
@@ -156,28 +118,35 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
                       );
                     },
                     child: Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.03),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
                       child: Row(
                         children: [
                           // Icon Container
                           Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE9ECEF),
-                              borderRadius: BorderRadius.circular(10),
+                            padding: const EdgeInsets.all(16),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF7C4DFF),
+                              shape: BoxShape.circle,
                             ),
                             child: Icon(
                               item["icon"] as IconData,
-                              color: const Color(0xFF0C1427),
-                              size: 24,
+                              color: Colors.white,
+                              size: 32,
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: 20),
                           
                           // Texts
                           Expanded(
@@ -188,16 +157,16 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
                                   item["title"] as String,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                    fontSize: 18,
                                     color: Color(0xFF0C1427),
                                   ),
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: 6),
                                 Text(
                                   item["subtitle"] as String,
                                   style: TextStyle(
                                     color: Colors.grey.shade600,
-                                    fontSize: 13,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ],
@@ -208,7 +177,7 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
                           Icon(
                             Icons.chevron_right,
                             color: Colors.grey.shade500,
-                            size: 24,
+                            size: 28,
                           ),
                         ],
                       ),

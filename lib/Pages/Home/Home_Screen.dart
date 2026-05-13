@@ -4,6 +4,10 @@ import '../../Widget/Footer/footer.dart';
 import '../Subcategory/subcategory_screen.dart';
 import '../Profile/profile_screen.dart';
 import '../Favorite/favorite_screen.dart';
+import '../Menu/Menu_Screen.dart';
+import '../Emergency/Emergency_Screen.dart';
+import '../Laws/Laws_Screen.dart';
+import '../Company/company_listing_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,51 +17,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
-
-  void _onItemTapped(int index) {
-    if (index == 1) {
-      // Favorite is now handled by index 1 in my logic, but the footer still says 'Emergency'.
-      // If the user wants to use index 1 for Favorites, I'll add that.
-      // But for now, let's just stick to the Profile navigation requested.
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const FavoriteScreen()),
-      ).then((_) => setState(() {}));
-    } else if (index == 3) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const ProfileScreen()),
-      ).then((_) => setState(() {}));
-    } else {
-      setState(() {
-        _currentIndex = index;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: const CustomHeader(),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return _buildMainLayout(context, constraints.maxWidth);
-            },
-          ),
-          const Center(child: Text("Emergency Screen", style: TextStyle(fontSize: 24))),
-          const Center(child: Text("Laws Screen", style: TextStyle(fontSize: 24))),
-          const Center(child: Text("Profile Screen", style: TextStyle(fontSize: 24))),
-        ],
+      endDrawer: const MenuScreen(),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return _buildMainLayout(context, constraints.maxWidth);
+        },
       ),
-      bottomNavigationBar: CustomFooter(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-      ),
+      bottomNavigationBar: const CustomFooter(currentIndex: 0),
     );
   }
 
@@ -80,8 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildCategorySection(context, crossAxisCount: maxWidth > 900 ? 6 : 3),
               _buildSectionHeader(context, "New Launches", () {}),
               _buildNewLaunchesList(context, crossAxisCount: maxWidth > 600 ? 3 : 0), // 0 means horizontal scroll
-              _buildSectionHeader(context, "Watch & Explore", () {}),
-              _buildWatchExploreSection(context),
+              _buildSectionHeader(context, "Watch & Explore"),
+              _buildWatchExploreSection(context, maxWidth),
               const SizedBox(height: 20),
             ],
           ),
@@ -187,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisCount: crossAxisCount,
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          childAspectRatio: crossAxisCount > 3 ? 1.3 : 1.1,
+          childAspectRatio: crossAxisCount > 3 ? 1.3 : 0.85,
         ),
         itemCount: categories.length,
         itemBuilder: (context, index) {
@@ -370,9 +341,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildWatchExploreSection(BuildContext context) {
+  Widget _buildWatchExploreSection(BuildContext context, double maxWidth) {
+    final double videoHeight = maxWidth > 600 ? 350 : 220;
     return Container(
-      height: 350,
+      height: videoHeight,
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFF1A1A1A),
@@ -529,7 +501,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSectionHeader(BuildContext context, String title, VoidCallback onSeeAll) {
+  Widget _buildSectionHeader(BuildContext context, String title, [VoidCallback? onSeeAll]) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
@@ -539,10 +511,11 @@ class _HomeScreenState extends State<HomeScreen> {
             title,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
           ),
-          TextButton(
-            onPressed: onSeeAll,
-            child: const Text("See All", style: TextStyle(color: Color(0xFF7C4DFF))),
-          ),
+          if (onSeeAll != null)
+            TextButton(
+              onPressed: onSeeAll,
+              child: const Text("See All", style: TextStyle(color: Color(0xFF7C4DFF))),
+            ),
         ],
       ),
     );
@@ -631,4 +604,5 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
 }

@@ -24,17 +24,26 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        toolbarHeight: 80,
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.arrow_back, color: Color(0xFF0C1427)),
+          child: Container(
+            margin: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF3EDFF),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(Icons.arrow_back, color: Color(0xFF4A5578), size: 24),
+          ),
         ),
         title: const Text(
           'Write Review',
           style: TextStyle(
             color: Color(0xFF0C1427),
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -66,13 +75,27 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Rating",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0C1427),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Rating",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0C1427),
+                      ),
+                    ),
+                    if (_selectedRating > 0)
+                      Text(
+                        "$_selectedRating.0 / 5.0",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF222845),
+                        ),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 12),
                 Row(
