@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../Theme/app_colors.dart';
 import '../../Widget/Footer/footer.dart';
 import '../Profile/profile_screen.dart';
 
@@ -16,7 +17,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     {
       "title": "Ambulance",
       "icon": Icons.local_hospital_outlined,
-      "iconColor": Colors.red,
+      "iconColor": AppColors.accentRed,
       "contacts": [
         {"name": "Apollo Emergency Services", "location": "Greams Road, Chennai"},
         {"name": "Fortis Ambulance", "location": "Vadapalani, Chennai"},
@@ -25,7 +26,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     {
       "title": "Police Station",
       "icon": Icons.local_police_outlined,
-      "iconColor": Colors.blue,
+      "iconColor": AppColors.primary,
       "contacts": [
         {"name": "Anna Salai Police Station", "location": "Anna Salai, Chennai"},
         {"name": "T. Nagar Police Station", "location": "T. Nagar, Chennai"},
@@ -34,7 +35,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     {
       "title": "Puncher Shop",
       "icon": Icons.build_circle_outlined,
-      "iconColor": Colors.orange,
+      "iconColor": AppColors.accent,
       "contacts": [
         {"name": "Sri Ram Tyres", "location": "Velachery, Chennai"},
         {"name": "Quick Fix Auto", "location": "Adyar, Chennai"},
@@ -71,7 +72,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           final loc = contact["location"].toString().toLowerCase();
           return name.contains(query) || loc.contains(query);
         });
-
+        
         return title.contains(query) || hasContactMatch;
       }).toList();
     });
@@ -80,10 +81,10 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -92,25 +93,18 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           child: Container(
             margin: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF3EDFF),
+              color: AppColors.primaryLight,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.arrow_back, color: Color(0xFF4A5578), size: 24),
+            child: const Icon(Icons.arrow_back, color: AppColors.textLight, size: 24),
           ),
         ),
         title: const Text(
           'Emergency Services',
           style: TextStyle(
-            color: Color(0xFF0C1427),
+            color: AppColors.textLight,
             fontSize: 22,
             fontWeight: FontWeight.bold,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey.shade200,
-            height: 1.0,
           ),
         ),
       ),
@@ -124,22 +118,25 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
               padding: const EdgeInsets.all(16.0),
               child: TextField(
                 controller: _searchController,
+                style: const TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
                   hintText: "Search emergency services...",
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                  hintStyle: const TextStyle(color: AppColors.textSecondary),
+                  prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
                   contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                  filled: true,
+                  fillColor: AppColors.surface,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
+                    borderSide: const BorderSide(color: AppColors.border),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
+                    borderSide: const BorderSide(color: AppColors.border),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFF222845)),
+                    borderSide: const BorderSide(color: AppColors.primary),
                   ),
                 ),
               ),
@@ -149,7 +146,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: _filteredCategories.isEmpty
-                      ? [const Padding(padding: EdgeInsets.only(top: 40), child: Center(child: Text("No emergency services found")))]
+                      ? [const Padding(padding: EdgeInsets.only(top: 40), child: Center(child: Text("No emergency services found", style: TextStyle(color: AppColors.textSecondary))))]
                       : _filteredCategories.map((category) => _buildEmergencyCard(category)).toList(),
                 ),
               ),
@@ -164,16 +161,16 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColors.primary.withOpacity(0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         children: [
@@ -181,7 +178,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: const BoxDecoration(
-              color: Color(0xFFEBEBEB), // Light grey header
+              color: AppColors.background, // Elegant top header
               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
             ),
             child: Row(
@@ -189,7 +186,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -204,7 +201,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF0C1427),
+                    color: AppColors.textPrimary,
                   ),
                 ),
               ],
@@ -228,7 +225,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF9F9F9),
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -243,20 +240,20 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF0C1427),
+                    color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    const Icon(Icons.location_on_outlined, size: 14, color: Colors.grey),
+                    const Icon(Icons.location_on_outlined, size: 14, color: AppColors.textSecondary),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
                         contact["location"],
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Colors.grey,
+                          color: AppColors.textSecondary,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -276,8 +273,8 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF222845),
-              foregroundColor: Colors.white,
+              backgroundColor: AppColors.primary,
+              foregroundColor: AppColors.textLight,
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

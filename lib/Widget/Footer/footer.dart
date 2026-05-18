@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Routes/app_routes.dart';
 
+import '../../Theme/app_colors.dart';
+
 class CustomFooter extends StatelessWidget {
   final int currentIndex;
 
@@ -37,12 +39,12 @@ class CustomFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
+            color: AppColors.primary.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, -4),
           ),
         ],
       ),
@@ -55,13 +57,18 @@ class CustomFooter extends StatelessWidget {
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.transparent,
             elevation: 0,
-            selectedItemColor: currentIndex < 0 ? const Color(0xFF955BFF).withOpacity(0.7) : const Color(0xFF955BFF),
-            unselectedItemColor: const Color(0xFF955BFF).withOpacity(0.7),
+            selectedItemColor: AppColors.primary,
+            unselectedItemColor: AppColors.secondary,
             selectedLabelStyle: TextStyle(
               fontWeight: currentIndex < 0 ? FontWeight.w600 : FontWeight.bold,
               fontSize: currentIndex < 0 ? 11 : 13,
+              color: AppColors.primary,
             ),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 11),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 11,
+              color: AppColors.secondary,
+            ),
             iconSize: 26,
             items: [
               BottomNavigationBarItem(

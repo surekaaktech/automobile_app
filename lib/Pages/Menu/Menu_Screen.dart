@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../Theme/app_colors.dart';
 import '../../Routes/app_routes.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class MenuScreen extends StatelessWidget {
 
     return Drawer(
       width: isTablet ? 450 : screenWidth * 0.85,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.zero,
       ),
@@ -30,10 +31,10 @@ class MenuScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: const BoxDecoration(
-                          color: Color(0xFF955BFF),
+                          color: AppColors.primary,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.directions_car, color: Colors.white, size: 24),
+                        child: const Icon(Icons.directions_car, color: AppColors.textLight, size: 24),
                       ),
                       const SizedBox(width: 12),
                       const Text(
@@ -41,7 +42,7 @@ class MenuScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1A1A1A),
+                          color: AppColors.textPrimary,
                         ),
                       ),
                     ],
@@ -51,10 +52,10 @@ class MenuScreen extends StatelessWidget {
                     icon: Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xFF955BFF).withOpacity(0.3)),
+                        border: Border.all(color: AppColors.primary.withOpacity(0.3)),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Icon(Icons.close, color: Color(0xFF955BFF), size: 24),
+                      child: const Icon(Icons.close, color: AppColors.primary, size: 24),
                     ),
                   ),
                 ],
@@ -65,7 +66,7 @@ class MenuScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1A1A1A),
+                  color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 24),
@@ -113,14 +114,14 @@ class MenuScreen extends StatelessWidget {
                   },
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                    side: const BorderSide(color: AppColors.primary, width: 1.5),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    backgroundColor: Colors.white,
-                    foregroundColor: const Color(0xFF1A1A1A),
+                    backgroundColor: AppColors.surface,
+                    foregroundColor: AppColors.primary,
                   ),
                   child: const Text(
                     "Login / Register",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -135,43 +136,43 @@ class MenuScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-        border: Border.all(color: Colors.grey.withOpacity(0.1)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Color(0xFF955BFF),
-              shape: BoxShape.circle,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primary.withOpacity(0.03),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-            child: Icon(icon, color: Colors.white, size: 24),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1A1A1A),
-              height: 1.2,
+          ],
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.08),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: AppColors.primary, size: 24),
             ),
-          ),
-        ],
-      ),
+            const SizedBox(height: 12),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+                height: 1.2,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

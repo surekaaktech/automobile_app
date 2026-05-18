@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../Theme/app_colors.dart';
 import '../../Widget/Footer/footer.dart';
 import '../Favorite/favorite_screen.dart';
 import '../Login/login_page.dart';
@@ -16,98 +17,188 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF222845),
+        toolbarHeight: 80,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.arrow_back, color: Colors.white),
+          child: Container(
+            margin: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.primaryLight.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white.withOpacity(0.15)),
+            ),
+            child: const Icon(Icons.arrow_back, color: AppColors.textLight, size: 24),
+          ),
         ),
         title: const Text(
           'Profile',
           style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+            color: AppColors.textLight,
+            fontSize: 20,
+            fontWeight: FontWeight.w900,
+            fontFamily: 'Outfit',
           ),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
         ),
       ),
       bottomNavigationBar: CustomFooter(
         currentIndex: _currentIndex,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(18.0),
         child: Column(
           children: [
-            // User Info Card
+            // 🏷️ Grand, Increased Size User Info Card
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(26),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
+                gradient: const LinearGradient(
+                  colors: [Colors.white, Color(0xFFFAFBFB)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(28),
+                border: Border.all(color: AppColors.border, width: 1.5),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
+                    color: Colors.black.withOpacity(0.02),
+                    blurRadius: 16,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: Row(
                 children: [
+                  // Enlarge Avatar from 80 to 100
+                  // 🏎️ Supercar Tachometer Speedometer Cockpit Gauge
                   Container(
-                    width: 80,
-                    height: 80,
+                    width: 116,
+                    height: 116,
                     decoration: const BoxDecoration(
-                      color: Color(0xFF222845),
                       shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(color: Colors.black12, blurRadius: 12),
+                      ],
                     ),
-                    child: const Center(
-                      child: Text(
-                        'S',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Speedometer Outer Gauge Arc
+                        Positioned.fill(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: SweepGradient(
+                                colors: [
+                                  AppColors.primary,
+                                  AppColors.primaryLight,
+                                  AppColors.accent,
+                                  Colors.redAccent,
+                                  AppColors.primary,
+                                ],
+                                stops: [0.0, 0.4, 0.75, 0.9, 1.0],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        // Cockpit Inner Bezel
+                        Container(
+                          width: 104,
+                          height: 104,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF0C190E), // Ultra-deep dark dashboard green
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        // Dashboard User Initial Text
+                        const Text(
+                          'S',
+                          style: TextStyle(
+                            color: AppColors.accent,
+                            fontSize: 38,
+                            fontWeight: FontWeight.w900,
+                            fontFamily: 'Outfit',
+                          ),
+                        ),
+                        // Instrument Needle Pointer (pointing to peak speed!)
+                        Positioned(
+                          right: 20,
+                          top: 30,
+                          child: Transform.rotate(
+                            angle: 0.6,
+                            child: Container(
+                              width: 24,
+                              height: 3,
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'User',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF0C1427),
+                  const SizedBox(width: 24),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'User',
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.textPrimary,
+                            fontFamily: 'Outfit',
+                            letterSpacing: 0.5,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'sri',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
+                        const SizedBox(height: 2),
+                        const Text(
+                          'sri',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Customer',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
+                        const SizedBox(height: 6),
+                        
+                        // Golden Role Tag Capsule
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: AppColors.accent.withOpacity(0.12),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: AppColors.accent.withOpacity(0.25)),
+                          ),
+                          child: const Text(
+                            'Customer',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w900,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
 
-            // Profile Options
+            // 🛠️ Profile Options - Card Size Increased
             _buildProfileOption(
               icon: Icons.favorite_border,
               title: 'Favorites',
@@ -139,37 +230,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onTap: () {},
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 36),
 
-            // Logout Button
+            // 🚪 Premium Logout Button
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                    (route) => false,
-                  );
-                },
-                icon: const Icon(Icons.logout, color: Colors.white),
-                label: const Text(
-                  'Logout',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accentRed.withOpacity(0.2),
+                      blurRadius: 15,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFF04438),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginPage()),
+                      (route) => false,
+                    );
+                  },
+                  icon: const Icon(Icons.logout, color: AppColors.textLight, size: 20),
+                  label: const Text(
+                    'Logout',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textLight,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.accentRed,
+                    foregroundColor: AppColors.textLight,
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 0,
                   ),
                 ),
               ),
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -182,38 +288,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required VoidCallback onTap,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 16), // Increased spacing
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(20), // Increased rounding
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: Colors.black.withOpacity(0.015),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: AppColors.border, width: 1.5),
       ),
       child: ListTile(
         onTap: onTap,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Increased Card Size/Padding
         leading: Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(12), // Increased padding
           decoration: BoxDecoration(
-            color: const Color(0xFFF2F4F7),
-            borderRadius: BorderRadius.circular(8),
+            color: AppColors.primary.withOpacity(0.08),
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.primary.withOpacity(0.12)),
           ),
-          child: Icon(icon, color: const Color(0xFF222845), size: 24),
+          child: Icon(icon, color: AppColors.primary, size: 24),
         ),
         title: Text(
           title,
           style: const TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF0C1427),
+            fontWeight: FontWeight.w800, // Extra weight for trendy look
+            color: AppColors.textPrimary,
+            fontFamily: 'Outfit',
           ),
         ),
-        trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+        trailing: Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: AppColors.secondary.withOpacity(0.08),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(Icons.chevron_right_rounded, color: AppColors.primary, size: 18),
+        ),
       ),
     );
   }

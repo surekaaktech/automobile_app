@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../Theme/app_colors.dart';
 import '../../Widget/Footer/footer.dart';
 
 class LoanScreen extends StatelessWidget {
@@ -15,10 +16,10 @@ class LoanScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         centerTitle: true,
         leading: GestureDetector(
@@ -26,25 +27,18 @@ class LoanScreen extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF3EDFF),
+              color: AppColors.primaryLight,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.arrow_back, color: Color(0xFF4A5578), size: 24),
+            child: const Icon(Icons.arrow_back, color: AppColors.textLight, size: 24),
           ),
         ),
         title: const Text(
           'Vehicle Loan',
           style: TextStyle(
-            color: Color(0xFF0C1427),
+            color: AppColors.textLight,
             fontSize: 22,
             fontWeight: FontWeight.bold,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey.shade200,
-            height: 1.0,
           ),
         ),
       ),
@@ -62,7 +56,7 @@ class LoanScreen extends StatelessWidget {
                 icon: Icons.two_wheeler,
                 title: "Two-Wheeler Loan",
                 description: "Bike & scooter loans at competitive interest rates.",
-                color: const Color(0xFF4CAF50),
+                color: AppColors.primary,
                 bankName: "HDFC Bank",
                 url: "https://www.hdfcbank.com/personal/borrow/popular-loans/two-wheeler-loan",
               ),
@@ -70,7 +64,7 @@ class LoanScreen extends StatelessWidget {
                 icon: Icons.directions_car,
                 title: "Car Loan",
                 description: "New & used car financing with easy EMI options.",
-                color: const Color(0xFF2196F3),
+                color: AppColors.primaryLight,
                 bankName: "SBI",
                 url: "https://sbi.co.in/web/personal-banking/loans/auto-loans/car-loan",
               ),
@@ -78,7 +72,7 @@ class LoanScreen extends StatelessWidget {
                 icon: Icons.local_shipping,
                 title: "Commercial Vehicle Loan",
                 description: "Trucks, buses & fleet financing for your business.",
-                color: const Color(0xFFFF9800),
+                color: AppColors.secondary,
                 bankName: "ICICI Bank",
                 url: "https://www.icicibank.com/business-banking/loans/commercial-vehicle-loan",
               ),
@@ -86,7 +80,7 @@ class LoanScreen extends StatelessWidget {
                 icon: Icons.electric_car,
                 title: "Electric Vehicle Loan",
                 description: "Special rates for EV purchases with govt subsidy benefits.",
-                color: const Color(0xFF00BCD4),
+                color: AppColors.accent,
                 bankName: "SBI Green Car Loan",
                 url: "https://sbi.co.in/web/personal-banking/loans/auto-loans/green-car-loan",
               ),
@@ -94,7 +88,7 @@ class LoanScreen extends StatelessWidget {
                 icon: Icons.agriculture,
                 title: "Tractor / Farm Vehicle Loan",
                 description: "Agricultural vehicle financing with flexible tenure.",
-                color: const Color(0xFF795548),
+                color: AppColors.primaryDark,
                 bankName: "Bank of Baroda",
                 url: "https://www.bankofbaroda.in/personal-banking/loans/tractor-loan",
               ),
@@ -102,7 +96,7 @@ class LoanScreen extends StatelessWidget {
                 icon: Icons.build,
                 title: "Used Vehicle Loan",
                 description: "Pre-owned vehicle loans with quick approval.",
-                color: const Color(0xFF9C27B0),
+                color: AppColors.textSecondary,
                 bankName: "Bajaj Finance",
                 url: "https://www.bajajfinserv.in/used-car-loan",
               ),
@@ -117,14 +111,14 @@ class LoanScreen extends StatelessWidget {
   Widget _buildSectionTitle(String title) {
     return Row(
       children: [
-        const Icon(Icons.account_balance_wallet, color: Color(0xFF222845), size: 22),
+        const Icon(Icons.account_balance_wallet, color: AppColors.primary, size: 22),
         const SizedBox(width: 8),
         Text(
           title,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF0C1427),
+            color: AppColors.textPrimary,
           ),
         ),
       ],
@@ -145,12 +139,12 @@ class LoanScreen extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.grey.shade200),
+          border: Border.all(color: AppColors.border),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: AppColors.primary.withOpacity(0.02),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -176,19 +170,19 @@ class LoanScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF0C1427),
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     description,
-                    style: const TextStyle(fontSize: 13, color: Colors.grey),
+                    style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
                   ),
                   const SizedBox(height: 6),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF3EDFF),
+                      color: AppColors.primary.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
@@ -196,14 +190,14 @@ class LoanScreen extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF4A5578),
+                        color: AppColors.primary,
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.open_in_new, size: 18, color: Colors.grey),
+            const Icon(Icons.open_in_new, size: 18, color: AppColors.secondary),
           ],
         ),
       ),

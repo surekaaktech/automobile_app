@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../Routes/app_routes.dart';
+import '../../Theme/app_colors.dart';
 
 class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
   const CustomHeader({super.key});
@@ -7,7 +8,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0xFF955BFF), // Purple color matching the image
+      backgroundColor: AppColors.primary, // Premium Porsche-inspired green
       elevation: 0,
       automaticallyImplyLeading: false, // Removes the back arrow
       centerTitle: false,
@@ -17,14 +18,16 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.directions_car_outlined, color: Colors.white, size: 28),
+            const Icon(Icons.directions_car_outlined, color: AppColors.textLight, size: 28),
             const SizedBox(width: 8),
-            const Text(
+            Text(
               'AutoFind',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textLight,
+                fontFamily: 'Outfit', // A modern premium-feeling font family matching the styling guidelines
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                letterSpacing: 0.8,
               ),
             ),
           ],
@@ -34,7 +37,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: IconButton(
-            icon: const Icon(Icons.menu, color: Colors.white, size: 28),
+            icon: const Icon(Icons.menu, color: AppColors.textLight, size: 28),
             onPressed: () {
               Scaffold.of(context).openEndDrawer();
             },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../Routes/app_routes.dart';
+import '../../Theme/app_colors.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -47,7 +48,6 @@ class _RegisterPageState extends State<RegisterPage> {
       _errorMessage = null;
     });
 
-    // Navigate to Home Screen after successful registration
     Navigator.pushReplacementNamed(context, AppRoutes.home);
   }
 
@@ -62,6 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buildTextField({
     required String label,
     required String hintText,
+    required IconData icon,
     required TextEditingController controller,
     bool isPassword = false,
   }) {
@@ -71,30 +72,35 @@ class _RegisterPageState extends State<RegisterPage> {
         Text(
           label,
           style: const TextStyle(
-            fontSize: 14,
-            fontWeight: bold,
-            color: Color(0xFF0C1427),
+            fontSize: 11,
+            fontWeight: FontWeight.w800,
+            color: AppColors.textSecondary,
+            letterSpacing: 1.2,
           ),
         ),
         const SizedBox(height: 8),
         TextField(
           controller: controller,
           obscureText: isPassword,
+          style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
+            prefixIcon: Icon(icon, color: AppColors.primary, size: 20),
             hintText: hintText,
-            hintStyle: const TextStyle(color: Colors.black38),
+            hintStyle: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.normal),
+            fillColor: AppColors.background,
+            filled: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Color(0xFF222845)),
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: AppColors.primary, width: 2),
             ),
           ),
         ),
@@ -103,209 +109,349 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  static const FontWeight bold = FontWeight.bold;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Logo
-                  const CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Color(0xFF222845),
-                    child: Icon(
-                      Icons.directions_car_outlined,
-                      size: 40,
-                      color: Color(0xFF4A5578),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Title
-                  const Text(
-                    'AutoFind',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFF0C1427),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Subtitle
-                  const Text(
-                    'Create your account',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black54,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  if (_errorMessage != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: Text(
-                        _errorMessage!,
-                        style: const TextStyle(color: Colors.red, fontSize: 14),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-
-                  _buildTextField(
-                    label: 'Username',
-                    hintText: 'Enter username',
-                    controller: _usernameController,
-                  ),
-                  _buildTextField(
-                    label: 'Password',
-                    hintText: 'Enter password',
-                    controller: _passwordController,
-                    isPassword: true,
-                  ),
-                  _buildTextField(
-                    label: 'Confirm Password',
-                    hintText: 'Confirm password',
-                    controller: _confirmPasswordController,
-                    isPassword: true,
-                  ),
-
-                  // Account Type
-                  const Text(
-                    'Account Type',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: bold,
-                      color: Color(0xFF0C1427),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Radio<String>(
-                        value: 'Customer',
-                        groupValue: _accountType,
-                        activeColor: const Color(0xFF222845),
-                        onChanged: (value) {
-                          setState(() {
-                            _accountType = value!;
-                          });
-                        },
-                      ),
-                      const Text('Customer'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Radio<String>(
-                        value: 'Service Provider',
-                        groupValue: _accountType,
-                        activeColor: const Color(0xFF222845),
-                        onChanged: (value) {
-                          setState(() {
-                            _accountType = value!;
-                          });
-                        },
-                      ),
-                      const Text('Service Provider'),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Terms & Conditions
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: Checkbox(
-                          value: _agreedToTerms,
-                          activeColor: const Color(0xFF222845),
-                          onChanged: (value) {
-                            setState(() {
-                              _agreedToTerms = value ?? false;
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Expanded(
-                        child: Text(
-                          'I agree to the User Agreement and Privacy Policy.\nBy registering, I consent to the collection and use of my information as described.',
-                          style: TextStyle(fontSize: 13, color: Colors.black87),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Register Button
-                  ElevatedButton(
-                    onPressed: _handleRegister,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF222845),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Login Link
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Already have an account? ",
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 14,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // Navigate back to login screen
-                          Navigator.pushReplacementNamed(context, AppRoutes.login);
-                        },
-                        child: const Text(
-                          "Login",
-                          style: TextStyle(
-                            color: Color(0xFF0C1427),
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+      body: Stack(
+        children: [
+          // 🌌 Deep Forest Ambient Background
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.primaryDark, Color(0xFF0F2513), AppColors.primary],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
             ),
           ),
-        ),
+
+          // 🟢 Ambient Glowing Blob
+          Positioned(
+            top: -80,
+            left: -80,
+            child: Container(
+              width: 320,
+              height: 320,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.primaryLight.withOpacity(0.25),
+              ),
+            ),
+          ),
+
+          // 🟡 Ambient Glowing Blob
+          Positioned(
+            bottom: -60,
+            right: -60,
+            child: Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.accent.withOpacity(0.12),
+              ),
+            ),
+          ),
+
+          // 📄 Main Content
+          SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 420),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // 🚗 Premium Glowing Brand Icon
+                      Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.08),
+                            border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.primaryLight.withOpacity(0.3),
+                                blurRadius: 20,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.directions_car_outlined,
+                            size: 44,
+                            color: AppColors.accent,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // 🏷️ Trendy Brand Typo
+                      const Text(
+                        'AutoFind',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 38,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                          fontFamily: 'Outfit',
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'THE MODERN AUTOMOBILE COMPANION',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.secondary.withOpacity(0.7),
+                          letterSpacing: 2.0,
+                        ),
+                      ),
+                      const SizedBox(height: 36),
+
+                      // 🪟 Frosted Glassmorphic Card
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 36),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.95),
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(color: Colors.white.withOpacity(0.3), width: 1.5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              blurRadius: 30,
+                              offset: const Offset(0, 15),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const Text(
+                              'Create Account',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textPrimary,
+                                fontFamily: 'Outfit',
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            const Text(
+                              'Join the next-gen automobile network',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            const SizedBox(height: 28),
+
+                            if (_errorMessage != null)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: Text(
+                                  _errorMessage!,
+                                  style: const TextStyle(color: AppColors.accentRed, fontSize: 13, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+
+                            _buildTextField(
+                              label: 'USERNAME',
+                              hintText: 'Choose a username',
+                              icon: Icons.alternate_email,
+                              controller: _usernameController,
+                            ),
+                            _buildTextField(
+                              label: 'PASSWORD',
+                              hintText: 'Create strong password',
+                              icon: Icons.lock_outline,
+                              controller: _passwordController,
+                              isPassword: true,
+                            ),
+                            _buildTextField(
+                              label: 'CONFIRM PASSWORD',
+                              hintText: 'Confirm your password',
+                              icon: Icons.lock_outline,
+                              controller: _confirmPasswordController,
+                              isPassword: true,
+                            ),
+
+                            // Account Type Label
+                            const Text(
+                              'ACCOUNT TYPE',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textSecondary,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+
+                            // Trendy Pill-Shaped Role Selector
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () => setState(() => _accountType = 'Customer'),
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: _accountType == 'Customer' ? AppColors.primary : AppColors.background,
+                                        borderRadius: BorderRadius.circular(14),
+                                        border: Border.all(
+                                          color: _accountType == 'Customer' ? AppColors.primary : AppColors.border,
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Customer',
+                                          style: TextStyle(
+                                            color: _accountType == 'Customer' ? Colors.white : AppColors.textPrimary,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () => setState(() => _accountType = 'Service Provider'),
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: _accountType == 'Service Provider' ? AppColors.primary : AppColors.background,
+                                        borderRadius: BorderRadius.circular(14),
+                                        border: Border.all(
+                                          color: _accountType == 'Service Provider' ? AppColors.primary : AppColors.border,
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Provider',
+                                          style: TextStyle(
+                                            color: _accountType == 'Service Provider' ? Colors.white : AppColors.textPrimary,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 24),
+
+                            // Terms & Conditions Checkbox
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: Checkbox(
+                                    value: _agreedToTerms,
+                                    activeColor: AppColors.primary,
+                                    checkColor: Colors.white,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _agreedToTerms = value ?? false;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                const Expanded(
+                                  child: Text(
+                                    'I agree to the User Agreement and Privacy Policy.',
+                                    style: TextStyle(fontSize: 12, color: AppColors.textSecondary, height: 1.4),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 28),
+
+                            // Dynamic Gradient Button
+                            GestureDetector(
+                              onTap: _handleRegister,
+                              child: Container(
+                                height: 56,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [AppColors.primary, AppColors.primaryLight],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.primary.withOpacity(0.3),
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 6),
+                                    ),
+                                  ],
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    'Sign Up',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 28),
+
+                            // Login Redirect Link
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Already have an account? ",
+                                  style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(context, AppRoutes.login);
+                                  },
+                                  child: const Text(
+                                    "Sign In",
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

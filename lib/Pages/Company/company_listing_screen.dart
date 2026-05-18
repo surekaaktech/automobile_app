@@ -3,8 +3,7 @@ import '../../Widget/Footer/footer.dart';
 import 'company_compare_screen.dart';
 import 'business_details_screen.dart';
 import '../../State/favorites_state.dart';
-import '../Favorite/favorite_screen.dart';
-import '../Profile/profile_screen.dart';
+import '../../Theme/app_colors.dart';
 
 class CompanyListingScreen extends StatefulWidget {
   final String categoryName;
@@ -64,7 +63,6 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
           return matchesSearch && company["isOpen"] == true;
         }
         if (_selectedFilter == "Nearby") {
-          // Mock nearby logic: distance < 3km
           final dist = double.parse(company["distance"].split(' ')[0]);
           return matchesSearch && dist < 3.0;
         }
@@ -94,9 +92,9 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
     },
   ];
 
-
   Widget _buildCompanyCard(Map<String, dynamic> company) {
     final bool isSelected = _selectedCompanies.contains(company["id"]);
+    final bool isFav = FavoritesState.isFavorite(company["id"]);
 
     return GestureDetector(
       onTap: () {
@@ -108,35 +106,48 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(24),
+        margin: const EdgeInsets.only(bottom: 18),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade300),
+          gradient: LinearGradient(
+            colors: [Colors.white, Colors.white.withOpacity(0.97)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: isSelected ? AppColors.primary.withOpacity(0.5) : AppColors.border,
+            width: isSelected ? 2.0 : 1.5,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.02),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: Colors.black.withOpacity(isSelected ? 0.05 : 0.02),
+              blurRadius: 16,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image Placeholder
+            // 🏍️ Modern Rounded Icon Wrapper
             Container(
-              width: 72,
-              height: 72,
+              width: 76,
+              height: 76,
               decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: [AppColors.primary.withOpacity(0.12), AppColors.primary.withOpacity(0.04)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: AppColors.primary.withOpacity(0.08), width: 1.5),
               ),
+              child: const Icon(Icons.directions_bike_outlined, color: AppColors.primary, size: 32),
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 18),
 
-            // Details
+            // 📝 Text Fields & Subcategories
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,30 +155,32 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                   Text(
                     company["name"],
                     style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0C1427),
+                      fontSize: 17,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.textPrimary,
+                      fontFamily: 'Outfit',
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 4),
                   Text(
                     company["category"],
                     style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.secondary,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.location_on_outlined, size: 14, color: Colors.grey),
+                      const Icon(Icons.location_on_outlined, size: 15, color: AppColors.secondary),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
                           company["location"],
                           style: const TextStyle(
                             fontSize: 13,
-                            color: Colors.grey,
+                            color: AppColors.textSecondary,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -175,47 +188,72 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
+                  
+                  // 🏷️ Trendy Glass Capsules Row
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 12,
-                    runSpacing: 8,
+                    spacing: 8,
+                    runSpacing: 6,
                     children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.star, size: 16, color: Color(0xFF222845)),
-                          const SizedBox(width: 4),
-                          Text(
-                            company["rating"],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                              color: Color(0xFF0C1427),
+                      // Gold Rating Capsule
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppColors.accent.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppColors.accent.withOpacity(0.25), width: 1),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.star, size: 13, color: AppColors.accent),
+                            const SizedBox(width: 4),
+                            Text(
+                              company["rating"],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: AppColors.textPrimary,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        company["distance"],
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey,
+                          ],
                         ),
                       ),
+
+                      // Distance Capsule
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppColors.secondary.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppColors.secondary.withOpacity(0.15), width: 1),
+                        ),
+                        child: Text(
+                          company["distance"],
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ),
+
+                      // Open Badge Capsule
                       if (company["isOpen"])
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF222845),
-                            borderRadius: BorderRadius.circular(6),
+                            color: Colors.green.withOpacity(0.08),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.green.withOpacity(0.2), width: 1),
                           ),
                           child: const Text(
-                            "Open",
+                            "Open Now",
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.green,
                               fontSize: 11,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
                         ),
@@ -224,24 +262,36 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                 ],
               ),
             ),
+            const SizedBox(width: 12),
 
-            // Trailing Icons
+            // 🛎️ Interactive Right Action Column
             Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  onPressed: () {
+                GestureDetector(
+                  onTap: () {
                     setState(() {
                       FavoritesState.toggleFavorite(company);
                     });
                   },
-                  icon: Icon(
-                    FavoritesState.isFavorite(company["id"]) ? Icons.favorite : Icons.favorite_border,
-                    color: const Color(0xFF0C1427),
-                    size: 20,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: isFav ? AppColors.accentRed.withOpacity(0.08) : AppColors.background,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: isFav ? AppColors.accentRed.withOpacity(0.2) : AppColors.border),
+                    ),
+                    child: Icon(
+                      isFav ? Icons.favorite : Icons.favorite_border,
+                      color: isFav ? AppColors.accentRed : AppColors.secondary,
+                      size: 18,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
+                
+                // Circular Glowing Selector Checkbox for Compare
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -252,15 +302,35 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                       }
                     });
                   },
-                  child: Container(
-                    width: 22,
-                    height: 22,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 26,
+                    height: 26,
                     decoration: BoxDecoration(
-                      color: isSelected ? const Color(0xFF0066CC) : Colors.white,
-                      border: Border.all(color: isSelected ? const Color(0xFF0066CC) : Colors.grey.shade400),
-                      borderRadius: BorderRadius.circular(4),
+                      gradient: isSelected
+                          ? const LinearGradient(
+                              colors: [AppColors.primary, AppColors.primaryLight],
+                            )
+                          : null,
+                      color: isSelected ? null : Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: isSelected ? AppColors.primary : AppColors.secondary.withOpacity(0.4),
+                        width: 2.0,
+                      ),
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: AppColors.primary.withOpacity(0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 3),
+                              ),
+                            ]
+                          : null,
                     ),
-                    child: isSelected ? const Icon(Icons.check, size: 16, color: Colors.white) : null,
+                    child: isSelected
+                        ? const Icon(Icons.check, size: 15, color: Colors.white)
+                        : null,
                   ),
                 ),
               ],
@@ -274,10 +344,10 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         automaticallyImplyLeading: false,
         titleSpacing: 16,
@@ -285,17 +355,18 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.pop(context); // Go back to subcategory screen
+                Navigator.pop(context);
               },
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF3EDFF),
-                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.primaryLight.withOpacity(0.6),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white.withOpacity(0.15), width: 1),
                 ),
                 child: const Icon(
                   Icons.arrow_back,
-                  color: Color(0xFF4A5578),
+                  color: AppColors.textLight,
                   size: 24,
                 ),
               ),
@@ -305,21 +376,18 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                 '${widget.categoryName} • ${widget.subcategoryName}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  color: Color(0xFF0C1427),
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+                  color: AppColors.textLight,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                  fontFamily: 'Outfit',
                 ),
               ),
             ),
-            const SizedBox(width: 44), // Invisible placeholder to balance the back arrow
+            const SizedBox(width: 46),
           ],
         ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey.shade200,
-            height: 1.0,
-          ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
         ),
       ),
       bottomNavigationBar: Column(
@@ -327,59 +395,83 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
         children: [
           if (_selectedCompanies.isNotEmpty)
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border(top: BorderSide(color: Colors.grey.shade300)),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.06),
+                    blurRadius: 20,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
               ),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_selectedCompanies.length < 2) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text("Compare Companies"),
-                        content: const Text("Please select at least 2 companies to compare."),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text("OK"),
-                          ),
-                        ],
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppColors.primary, AppColors.primaryLight],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_selectedCompanies.length < 2) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          title: const Text("Compare Companies", style: TextStyle(fontWeight: FontWeight.bold)),
+                          content: const Text("Please select at least 2 companies to compare."),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text("OK", style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                            ),
+                          ],
+                        ),
+                      );
+                      return;
+                    }
+                    final selected = _companies
+                        .where((c) => _selectedCompanies.contains(c["id"]))
+                        .toList();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CompanyCompareScreen(
+                          companies: selected,
+                        ),
                       ),
                     );
-                    return;
-                  }
-                  final selected = _companies
-                      .where((c) => _selectedCompanies.contains(c["id"]))
-                      .toList();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CompanyCompareScreen(
-                        companies: selected,
-                      ),
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    foregroundColor: Colors.white,
+                    shadowColor: Colors.transparent,
+                    minimumSize: const Size(double.infinity, 56),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF222845),
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
                   ),
-                ),
-                child: Text(
-                  'Compare (${_selectedCompanies.length})',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                  child: Text(
+                    'Compare (${_selectedCompanies.length} selected)',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ),
               ),
             ),
-          // Show the CustomFooter below the compare button
           CustomFooter(
             currentIndex: _currentIndex,
           ),
@@ -391,34 +483,45 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Search Bar
-              TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search auto services...',
-                  hintStyle: const TextStyle(color: Colors.black38),
-                  prefixIcon: const Icon(Icons.search, color: Colors.black54),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFF222845)),
+              // 🔍 Stylized Gradient Search Bar
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.03),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+                  decoration: InputDecoration(
+                    hintText: 'Search auto services...',
+                    hintStyle: const TextStyle(color: AppColors.textSecondary),
+                    prefixIcon: const Icon(Icons.search, color: AppColors.primary, size: 22),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                    ),
                   ),
                 ),
-                onSubmitted: (value) {
-                  // Perform search logic here
-                },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
 
-              // Filter Chips Row
+              // 🏷️ Trendy filter chips row
               Row(
                 children: [
                   Expanded(
@@ -428,7 +531,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                         children: _filters.map((filter) {
                           final isSelected = _selectedFilter == filter;
                           return Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
+                            padding: const EdgeInsets.only(right: 10.0),
                             child: GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -436,21 +539,37 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                                   _applyFilters();
                                 });
                               },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                                 decoration: BoxDecoration(
-                                  color: isSelected ? const Color(0xFF222845) : Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: isSelected
+                                      ? const LinearGradient(
+                                          colors: [AppColors.primary, AppColors.primaryLight],
+                                        )
+                                      : null,
+                                  color: isSelected ? null : Colors.white,
+                                  borderRadius: BorderRadius.circular(22),
                                   border: Border.all(
-                                    color: isSelected ? const Color(0xFF222845) : Colors.grey.shade300,
+                                    color: isSelected ? AppColors.primary : AppColors.border,
+                                    width: 1.5,
                                   ),
+                                  boxShadow: isSelected
+                                      ? [
+                                          BoxShadow(
+                                            color: AppColors.primary.withOpacity(0.2),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 3),
+                                          )
+                                        ]
+                                      : null,
                                 ),
                                 child: Text(
                                   filter,
                                   style: TextStyle(
-                                    color: isSelected ? Colors.white : const Color(0xFF0C1427),
-                                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                    fontSize: 14,
+                                    color: isSelected ? Colors.white : AppColors.textPrimary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
                                   ),
                                 ),
                               ),
@@ -460,45 +579,47 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 10),
                   // Filter Icon Button
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey.shade300),
+                      border: Border.all(color: AppColors.border, width: 1.5),
                     ),
-                    child: const Icon(Icons.filter_alt_outlined, size: 20, color: Color(0xFF0C1427)),
+                    child: const Icon(Icons.filter_alt_outlined, size: 20, color: AppColors.primary),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 20),
 
               // Decorative Scrollbar / Line
               Row(
                 children: [
-                  const Icon(Icons.arrow_left, color: Colors.grey, size: 16),
+                  const Icon(Icons.arrow_left, color: AppColors.secondary, size: 16),
                   Expanded(
                     child: Container(
-                      height: 6,
+                      height: 3,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade400,
-                        borderRadius: BorderRadius.circular(3),
+                        color: AppColors.border,
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
                   ),
-                  const Icon(Icons.arrow_right, color: Colors.grey, size: 16),
+                  const Icon(Icons.arrow_right, color: AppColors.secondary, size: 16),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 18),
 
               // Results Count
               Text(
                 '${_filteredCompanies.length} results near Chennai',
                 style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
+                  color: AppColors.textSecondary,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
                 ),
               ),
               const SizedBox(height: 16),
@@ -508,7 +629,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                 const Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 40),
-                    child: Text("No results found"),
+                    child: Text("No results found", style: TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.bold)),
                   ),
                 )
               else

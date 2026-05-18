@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../State/favorites_state.dart';
 import '../../Widget/Footer/footer.dart';
 import '../Company/business_details_screen.dart';
-import '../Profile/profile_screen.dart';
+import '../../Theme/app_colors.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -12,7 +12,7 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  int _currentIndex = 1; // Favorite is usually the second item
+  int _currentIndex = -1; // Favorite is usually the second item
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = "";
 
@@ -45,27 +45,30 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        toolbarHeight: 80,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.arrow_back, color: Color(0xFF0C1427)),
+          child: Container(
+            margin: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.primaryLight,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(Icons.arrow_back, color: AppColors.textLight, size: 24),
+          ),
         ),
         title: const Text(
           'My Favorites',
           style: TextStyle(
-            color: Color(0xFF0C1427),
+            color: AppColors.textLight,
             fontWeight: FontWeight.bold,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey.shade200,
-            height: 1.0,
+            fontSize: 22,
           ),
         ),
       ),
@@ -80,22 +83,25 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
                   controller: _searchController,
+                  style: const TextStyle(color: AppColors.textPrimary),
                   decoration: InputDecoration(
                     hintText: "Search favorites...",
-                    hintStyle: const TextStyle(color: Colors.grey),
-                    prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                    hintStyle: const TextStyle(color: AppColors.textSecondary),
+                    prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
                     contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                    fillColor: AppColors.surface,
+                    filled: true,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: AppColors.border),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: AppColors.border),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Color(0xFF222845)),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: AppColors.primary, width: 2),
                     ),
                   ),
                 ),
@@ -106,11 +112,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.favorite_border, size: 64, color: Colors.grey.shade300),
+                          Icon(Icons.favorite_border, size: 64, color: AppColors.secondary.withOpacity(0.4)),
                           const SizedBox(height: 16),
                           Text(
                             allFavorites.isEmpty ? "No favorites yet" : "No matches found",
-                            style: const TextStyle(color: Colors.grey, fontSize: 16),
+                            style: const TextStyle(color: AppColors.textSecondary, fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
@@ -119,81 +125,81 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       itemCount: favorites.length,
                       itemBuilder: (context, index) {
-                  final company = favorites[index];
-                  return GestureDetector(
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BusinessDetailsScreen(company: company),
-                        ),
-                      );
-                      _refresh();
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 16),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade300),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.02),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 60,
+                        final company = favorites[index];
+                        return GestureDetector(
+                          onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BusinessDetailsScreen(company: company),
+                              ),
+                            );
+                            _refresh();
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 16),
+                            padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
-                              borderRadius: BorderRadius.circular(8),
+                              color: AppColors.surface,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: AppColors.border),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primary.withOpacity(0.02),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
-                            child: const Icon(Icons.business, color: Colors.grey),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Row(
                               children: [
-                                Text(
-                                  company["name"],
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF0C1427),
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary.withOpacity(0.08),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Icon(Icons.business, color: AppColors.primary, size: 28),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        company["name"],
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.textPrimary,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        company["category"],
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  company["category"],
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.grey,
-                                  ),
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      FavoritesState.toggleFavorite(company);
+                                    });
+                                  },
+                                  icon: const Icon(Icons.favorite, color: AppColors.accentRed),
                                 ),
                               ],
                             ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                FavoritesState.toggleFavorite(company);
-                              });
-                            },
-                            icon: const Icon(Icons.favorite, color: Color(0xFF222845)),
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),

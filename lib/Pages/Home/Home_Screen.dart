@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../Theme/app_colors.dart';
 import '../../Widget/Header/header.dart';
 import '../../Widget/Footer/footer.dart';
 import '../Subcategory/subcategory_screen.dart';
@@ -20,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: AppColors.background,
       appBar: const CustomHeader(),
       endDrawer: const MenuScreen(),
       body: LayoutBuilder(
@@ -68,14 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         gradient: const LinearGradient(
-          colors: [Color(0xFF1A1A1A), Color(0xFF4A4A4A)],
+          colors: [AppColors.primary, AppColors.primaryDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
+            color: AppColors.primary.withOpacity(0.2),
+            blurRadius: 15,
             offset: const Offset(0, 5),
           ),
         ],
@@ -85,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(24),
             child: Opacity(
-              opacity: 0.6,
+              opacity: 0.45,
               child: Image.network(
                 'https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop',
                 fit: BoxFit.cover,
@@ -94,6 +95,35 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+
+          // 🏎️ Supercar HUD Speedometer Backdrop Accent in top right corner
+          Positioned(
+            top: -30,
+            right: -30,
+            child: Opacity(
+              opacity: 0.12,
+              child: Container(
+                width: 190,
+                height: 190,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 4),
+                ),
+                child: Center(
+                  child: Container(
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 1.5, style: BorderStyle.solid),
+                    ),
+                    child: const Icon(Icons.speed_outlined, color: Colors.white, size: 70),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
@@ -103,19 +133,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2D62ED),
+                    color: AppColors.accent,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Text(
                     "LIMITED OFFER",
-                    style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.0,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
                 const Text(
                   "Get 20% Off on\nFull Car Service",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textLight,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     height: 1.2,
@@ -125,11 +160,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
+                    backgroundColor: AppColors.surface,
+                    foregroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    elevation: 2,
                   ),
-                  child: const Text("Book Now"),
+                  child: const Text("Book Now", style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -175,12 +211,12 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                border: Border.all(color: AppColors.border),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: AppColors.primary.withOpacity(0.03),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -191,16 +227,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Container(
                     padding: const EdgeInsets.all(16),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF7C4DFF),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.08),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(categories[index]["icon"] as IconData, color: Colors.white, size: 24),
+                    child: Icon(
+                      categories[index]["icon"] as IconData,
+                      color: AppColors.primary,
+                      size: 24,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     categories[index]["label"] as String,
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -215,20 +259,35 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCategoryHeader(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
+          // 🏎️ Double Racing Stripe Icon Separator
+          Container(
+            width: 4,
+            height: 20,
+            decoration: BoxDecoration(
+              color: AppColors.accent,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(width: 3),
+          Container(
+            width: 4,
+            height: 20,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(width: 12),
           Text(
             title,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
-          ),
-          const SizedBox(height: 4),
-          Container(
-            width: 40,
-            height: 3,
-            decoration: BoxDecoration(
-              color: const Color(0xFF7C4DFF),
-              borderRadius: BorderRadius.circular(2),
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w900,
+              color: AppColors.textPrimary,
+              fontFamily: 'Outfit',
+              letterSpacing: 0.5,
             ),
           ),
         ],
@@ -281,12 +340,12 @@ class _HomeScreenState extends State<HomeScreen> {
       width: width,
       margin: EdgeInsets.only(right: width != null ? 16 : 0, bottom: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColors.primary.withOpacity(0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -297,12 +356,12 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Expanded(
             child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFF1F3F5),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              decoration: const BoxDecoration(
+                color: AppColors.background,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Center(
-                child: Icon(Icons.directions_car_outlined, size: 60, color: Colors.grey.withOpacity(0.5)),
+                child: Icon(Icons.directions_car_outlined, size: 60, color: AppColors.secondary.withOpacity(0.5)),
               ),
             ),
           ),
@@ -314,24 +373,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF7C4DFF),
+                    color: AppColors.accent,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Text(
                     "New",
-                    style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   car["name"]!,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: AppColors.textPrimary,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   car["brand"]!,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
                 ),
               ],
             ),
@@ -347,16 +414,16 @@ class _HomeScreenState extends State<HomeScreen> {
       height: videoHeight,
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
+        color: AppColors.primaryDark,
         borderRadius: BorderRadius.circular(24),
         image: const DecorationImage(
           image: NetworkImage('https://images.unsplash.com/photo-1544636331-e26879cd4d9b?q=80&w=2038&auto=format&fit=crop'),
           fit: BoxFit.cover,
-          opacity: 0.6,
+          opacity: 0.45,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: AppColors.primary.withOpacity(0.2),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -371,17 +438,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF7C4DFF).withOpacity(0.9),
+                    color: AppColors.accent.withOpacity(0.95),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.play_arrow, color: Colors.white, size: 50),
+                  child: const Icon(Icons.play_arrow, color: AppColors.textPrimary, size: 50),
                 ),
                 const SizedBox(height: 16),
                 const Text(
                   "Review: The Future of EVs",
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.white,
+                    color: AppColors.textLight,
                     fontWeight: FontWeight.bold,
                     shadows: [Shadow(color: Colors.black45, blurRadius: 10)],
                   ),
@@ -390,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   "Watch now • 12:45",
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.white70,
+                    color: AppColors.silver, // silver-white
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -440,11 +507,11 @@ class _HomeScreenState extends State<HomeScreen> {
           return Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
+                  color: AppColors.primary.withOpacity(0.03),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -455,10 +522,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF1F3F5),
+                    color: AppColors.primary.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.local_gas_station, color: Color(0xFF7C4DFF)),
+                  child: const Icon(Icons.local_gas_station, color: AppColors.primary),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -468,13 +535,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Text(
                         pumps[index]["name"]!,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: AppColors.textPrimary,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         "${pumps[index]["distance"]!} away",
-                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                        style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
                       ),
                     ],
                   ),
@@ -485,11 +556,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text(
                       pumps[index]["price"]!,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF7C4DFF)),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: AppColors.primary,
+                      ),
                     ),
                     const Text(
                       "per litre",
-                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                      style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
                     ),
                   ],
                 ),
@@ -509,12 +584,16 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             title,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
           ),
           if (onSeeAll != null)
             TextButton(
               onPressed: onSeeAll,
-              child: const Text("See All", style: TextStyle(color: Color(0xFF7C4DFF))),
+              child: const Text("See All", style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
             ),
         ],
       ),
@@ -538,7 +617,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisCount: crossAxisCount,
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          childAspectRatio: crossAxisCount > 2 ? 1.0 : 1.3,
+          childAspectRatio: crossAxisCount > 2 ? 1.45 : 1.85,
         ),
         itemCount: fuelData.length,
         itemBuilder: (context, index) {
@@ -546,13 +625,13 @@ class _HomeScreenState extends State<HomeScreen> {
           final isDown = data["isDown"] as bool?;
           
           return Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
-              color: const Color(0xFF303F9F),
-              borderRadius: BorderRadius.circular(20),
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: AppColors.primary.withOpacity(0.15),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -567,30 +646,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
                     data["label"] as String,
-                    style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                    style: const TextStyle(color: AppColors.silver, fontSize: 12, fontWeight: FontWeight.w600),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Text(
                     data["price"] as String,
-                    style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: AppColors.textLight, fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
                       if (isDown != null)
                         Icon(
                           isDown ? Icons.south_west : Icons.north_east,
                           color: isDown ? Colors.greenAccent : Colors.redAccent,
-                          size: 14,
+                          size: 11,
                         ),
                       const SizedBox(width: 4),
                       Text(
                         data["change"] as String,
                         style: TextStyle(
                           color: isDown == null 
-                              ? Colors.white54 
+                              ? AppColors.silver.withOpacity(0.6) 
                               : (isDown ? Colors.greenAccent : Colors.redAccent),
-                          fontSize: 12,
+                          fontSize: 10,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

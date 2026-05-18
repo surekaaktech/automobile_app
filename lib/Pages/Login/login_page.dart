@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../Routes/app_routes.dart';
+import '../../Theme/app_colors.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,7 +19,6 @@ class _LoginPageState extends State<LoginPage> {
     final username = _usernameController.text.trim();
     final password = _passwordController.text.trim();
 
-    // Condition: Check if both fields are not empty
     if (username.isEmpty || password.isEmpty) {
       setState(() {
         _errorMessage = 'Please enter both username and password';
@@ -26,20 +26,10 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    // Condition: You can add specific username/password check here
-    // For example:
-    // if (username != 'admin' || password != 'password') {
-    //   setState(() {
-    //     _errorMessage = 'Invalid username or password';
-    //   });
-    //   return;
-    // }
-
     setState(() {
-      _errorMessage = null; // clear error
+      _errorMessage = null;
     });
 
-    // If condition passes, navigate to Home screen
     Navigator.pushReplacementNamed(context, AppRoutes.home);
   }
 
@@ -53,213 +43,327 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24.0,
-              vertical: 24.0,
+      body: Stack(
+        children: [
+          // 🌌 Deep Forest Ambient Background
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.primaryDark, Color(0xFF0F2513), AppColors.primary],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Logo
-                  const CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Color(0xFF222845),
-                    child: Icon(
-                      Icons.directions_car_outlined,
-                      size: 40,
-                      color: Color(0xFF4A5578),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
+          ),
 
-                  // Title
-                  const Text(
-                    'AutoFind',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFF0C1427),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
+          // 🟢 Ambient Glowing Blob Top-Left
+          Positioned(
+            top: -80,
+            left: -80,
+            child: Container(
+              width: 320,
+              height: 320,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.primaryLight.withOpacity(0.25),
+              ),
+            ),
+          ),
 
-                  // Subtitle
-                  const Text(
-                    'Login to your account',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: Colors.black54),
-                  ),
-                  const SizedBox(height: 40),
+          // 🟡 Ambient Glowing Blob Bottom-Right
+          Positioned(
+            bottom: -60,
+            right: -60,
+            child: Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.accent.withOpacity(0.12),
+              ),
+            ),
+          ),
 
-                  // Display Error Message if any
-                  if (_errorMessage != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: Text(
-                        _errorMessage!,
-                        style: const TextStyle(color: Colors.red, fontSize: 14),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-
-                  // Username Label
-                  const Text(
-                    'Username',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0C1427),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Username Field
-                  TextField(
-                    controller: _usernameController,
-                    decoration: InputDecoration(
-                      hintText: 'Enter username',
-                      hintStyle: const TextStyle(color: Colors.black38),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(color: Color(0xFF222845)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Password Label
-                  const Text(
-                    'Password',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0C1427),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Password Field
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'Enter password',
-                      hintStyle: const TextStyle(color: Colors.black38),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(color: Color(0xFF222845)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Forgot Password Link
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        // Navigate to forgot password page
-                        Navigator.pushNamed(context, AppRoutes.forgot);
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: const Size(0, 0),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      child: const Text(
-                        'Forgot password?',
-                        style: TextStyle(
-                          color: Color(0xFF222845),
-                          fontWeight: FontWeight.w600,
+          // 📄 Main Content
+          SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 420),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // 🚗 Premium Glowing Brand Icon
+                      Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.08),
+                            border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.primaryLight.withOpacity(0.3),
+                                blurRadius: 20,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.directions_car_outlined,
+                            size: 44,
+                            color: AppColors.accent,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
+                      const SizedBox(height: 20),
 
-                  // Login Button
-                  ElevatedButton(
-                    onPressed: _handleLogin,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF222845),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Register Link
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                      // 🏷️ Trendy Brand Typo
                       const Text(
-                        "Don't have an account? ",
-                        style: TextStyle(color: Colors.black87, fontSize: 14),
+                        'AutoFind',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 38,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                          fontFamily: 'Outfit',
+                          letterSpacing: 1.5,
+                        ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          // Navigate to register page
-                          Navigator.pushReplacementNamed(context, AppRoutes.register);
-                        },
-                        child: const Text(
-                          "Register",
-                          style: TextStyle(
-                            color: Color(0xFF0C1427),
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'THE MODERN AUTOMOBILE COMPANION',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.secondary.withOpacity(0.7),
+                          letterSpacing: 2.0,
+                        ),
+                      ),
+                      const SizedBox(height: 36),
+
+                      // 🪟 Frosted Glassmorphic Card
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 36),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.95),
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(color: Colors.white.withOpacity(0.3), width: 1.5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              blurRadius: 30,
+                              offset: const Offset(0, 15),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const Text(
+                              'Welcome Back',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textPrimary,
+                                fontFamily: 'Outfit',
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            const Text(
+                              'Sign in to access premium services',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            const SizedBox(height: 28),
+
+                            // Error text
+                            if (_errorMessage != null)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: Text(
+                                  _errorMessage!,
+                                  style: const TextStyle(color: AppColors.accentRed, fontSize: 13, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+
+                            // Input Label - Username
+                            const Text(
+                              'USERNAME',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textSecondary,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+
+                            // Username Input Box
+                            TextField(
+                              controller: _usernameController,
+                              style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.alternate_email, color: AppColors.primary, size: 20),
+                                hintText: 'Enter username',
+                                hintStyle: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.normal),
+                                fillColor: AppColors.background,
+                                filled: true,
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: BorderSide.none,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+
+                            // Input Label - Password
+                            const Text(
+                              'PASSWORD',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textSecondary,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+
+                            // Password Input Box
+                            TextField(
+                              controller: _passwordController,
+                              obscureText: true,
+                              style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.lock_outline, color: AppColors.primary, size: 20),
+                                hintText: 'Enter password',
+                                hintStyle: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.normal),
+                                fillColor: AppColors.background,
+                                filled: true,
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: BorderSide.none,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+
+                            // Forgot link
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, AppRoutes.forgot);
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: const Size(0, 0),
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: const Text(
+                                  'Forgot password?',
+                                  style: TextStyle(
+                                    color: AppColors.primaryLight,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 28),
+
+                            // Dynamic Gradient Button
+                            GestureDetector(
+                              onTap: _handleLogin,
+                              child: Container(
+                                height: 56,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [AppColors.primary, AppColors.primaryLight],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.primary.withOpacity(0.3),
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 6),
+                                    ),
+                                  ],
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    'Sign In',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 28),
+
+                            // Register Option Link
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "New here? ",
+                                  style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(context, AppRoutes.register);
+                                  },
+                                  child: const Text(
+                                    "Create Account",
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

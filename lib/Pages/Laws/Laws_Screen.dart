@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../Theme/app_colors.dart';
 import '../../Widget/Footer/footer.dart';
 import '../Profile/profile_screen.dart';
 import '../Emergency/Emergency_Screen.dart';
@@ -96,10 +97,10 @@ class _LawsScreenState extends State<LawsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -108,25 +109,18 @@ class _LawsScreenState extends State<LawsScreen> {
           child: Container(
             margin: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF3EDFF),
+              color: AppColors.primaryLight,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.arrow_back, color: Color(0xFF4A5578), size: 24),
+            child: const Icon(Icons.arrow_back, color: AppColors.textLight, size: 24),
           ),
         ),
         title: const Text(
           'Traffic Laws',
           style: TextStyle(
-            color: Color(0xFF0C1427),
+            color: AppColors.textLight,
             fontSize: 22,
             fontWeight: FontWeight.bold,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey.shade200,
-            height: 1.0,
           ),
         ),
       ),
@@ -141,22 +135,25 @@ class _LawsScreenState extends State<LawsScreen> {
               padding: const EdgeInsets.all(16.0),
               child: TextField(
                 controller: _searchController,
+                style: const TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
                   hintText: "Search laws...",
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                  hintStyle: const TextStyle(color: AppColors.textSecondary),
+                  prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
                   contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                  filled: true,
+                  fillColor: AppColors.surface,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
+                    borderSide: const BorderSide(color: AppColors.border),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
+                    borderSide: const BorderSide(color: AppColors.border),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFF222845)),
+                    borderSide: const BorderSide(color: AppColors.primary),
                   ),
                 ),
               ),
@@ -213,7 +210,7 @@ class _LawsScreenState extends State<LawsScreen> {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF0C1427),
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 4),
@@ -221,7 +218,7 @@ class _LawsScreenState extends State<LawsScreen> {
             width: 40,
             height: 3,
             decoration: BoxDecoration(
-              color: const Color(0xFF222845),
+              color: AppColors.accent,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -237,12 +234,12 @@ class _LawsScreenState extends State<LawsScreen> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade200),
+          border: Border.all(color: AppColors.border),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: AppColors.primary.withOpacity(0.02),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -259,7 +256,7 @@ class _LawsScreenState extends State<LawsScreen> {
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF0C1427),
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -267,13 +264,13 @@ class _LawsScreenState extends State<LawsScreen> {
                     law["description"]!,
                     style: const TextStyle(
                       fontSize: 14,
-                      color: Colors.grey,
+                      color: AppColors.textSecondary,
                     ),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.open_in_new, size: 18, color: Colors.grey),
+            const Icon(Icons.open_in_new, size: 18, color: AppColors.secondary),
           ],
         ),
       ),
@@ -297,14 +294,14 @@ class _LawsScreenState extends State<LawsScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFFF3EDFF),
+              color: AppColors.primary.withOpacity(0.08),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFE0D4FF)),
+              border: Border.all(color: AppColors.primary.withOpacity(0.15)),
             ),
             child: Text(
               u["name"]!,
               style: const TextStyle(
-                color: Color(0xFF4A5578),
+                color: AppColors.primary,
                 fontWeight: FontWeight.w600,
                 fontSize: 13,
               ),

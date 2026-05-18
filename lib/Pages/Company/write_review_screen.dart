@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../Theme/app_colors.dart';
 
 class WriteReviewScreen extends StatefulWidget {
   final Map<String, dynamic> company;
@@ -22,68 +23,85 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
           child: Container(
             margin: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF3EDFF),
-              borderRadius: BorderRadius.circular(10),
+              color: AppColors.primaryLight.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white.withOpacity(0.15)),
             ),
-            child: const Icon(Icons.arrow_back, color: Color(0xFF4A5578), size: 24),
+            child: const Icon(Icons.arrow_back, color: AppColors.textLight, size: 24),
           ),
         ),
         title: const Text(
           'Write Review',
           style: TextStyle(
-            color: Color(0xFF0C1427),
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
+            color: AppColors.textLight,
+            fontSize: 20,
+            fontWeight: FontWeight.w900,
+            fontFamily: 'Outfit',
           ),
         ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey.shade200,
-            height: 1.0,
-          ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(26),
+              border: Border.all(color: AppColors.border, width: 1.5),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.02),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+                  blurRadius: 16,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Title Info
+                Text(
+                  widget.company["name"] ?? "Review Business",
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textPrimary,
+                    fontFamily: 'Outfit',
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  "Tell us about your experience to help the community",
+                  style: TextStyle(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 28),
+
+                // Rating Selector Header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Rating",
+                      "Rating Score",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF0C1427),
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     if (_selectedRating > 0)
@@ -91,74 +109,96 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
                         "$_selectedRating.0 / 5.0",
                         style: const TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF222845),
+                          fontWeight: FontWeight.w900,
+                          color: AppColors.primary,
+                          fontFamily: 'Outfit',
                         ),
                       ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 14),
+
+                // Interactive Touch Star Board
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(5, (index) {
+                    final isSelected = index < _selectedRating;
                     return GestureDetector(
                       onTap: () {
                         setState(() {
                           _selectedRating = index + 1;
                         });
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        margin: const EdgeInsets.symmetric(horizontal: 6),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: isSelected ? AppColors.accent.withOpacity(0.12) : AppColors.background,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: isSelected ? AppColors.accent : AppColors.border,
+                            width: 1.5,
+                          ),
+                        ),
                         child: Icon(
-                          index < _selectedRating ? Icons.star : Icons.star_border,
-                          size: 36,
-                          color: index < _selectedRating ? const Color(0xFF222845) : Colors.grey.shade300,
+                          Icons.star,
+                          size: 32,
+                          color: isSelected ? AppColors.accent : AppColors.secondary.withOpacity(0.4),
                         ),
                       ),
                     );
                   }),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
+
+                // Comment section
                 const Text(
-                  "Comment (Optional)",
+                  "Write Comment",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF0C1427),
+                    color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 TextField(
                   controller: _commentController,
+                  style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
                   maxLines: 5,
                   decoration: InputDecoration(
-                    hintText: "Share your experience...",
-                    hintStyle: const TextStyle(color: Colors.grey),
+                    hintText: "What went well? How was the speed and customer service?",
+                    hintStyle: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.normal),
+                    fillColor: AppColors.background,
+                    filled: true,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Color(0xFF222845)),
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: const BorderSide(color: AppColors.primary, width: 2),
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
+
+                // Cancel and Submit Button row
                 Row(
                   children: [
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: const Color(0xFF0C1427),
-                          side: BorderSide(color: Colors.grey.shade300),
+                          foregroundColor: AppColors.textPrimary,
+                          side: const BorderSide(color: AppColors.border, width: 1.5),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(16),
                           ),
                         ),
                         child: const Text(
@@ -169,31 +209,46 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_selectedRating == 0) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Please select a rating")),
-                            );
-                            return;
-                          }
-                          // Return review data to the previous screen
-                          Navigator.pop(context, {
-                            "rating": _selectedRating.toDouble(),
-                            "comment": _commentController.text,
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF222845),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [AppColors.primary, AppColors.primaryLight],
                           ),
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primary.withOpacity(0.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
-                        child: const Text(
-                          "Submit Review",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_selectedRating == 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Please select a rating")),
+                              );
+                              return;
+                            }
+                            Navigator.pop(context, {
+                              "rating": _selectedRating.toDouble(),
+                              "comment": _commentController.text,
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            foregroundColor: Colors.white,
+                            shadowColor: Colors.transparent,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: const Text(
+                            "Submit Review",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),

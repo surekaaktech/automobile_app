@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../Widget/Footer/footer.dart';
+import '../../Theme/app_colors.dart';
 
 class GovtFormsScreen extends StatefulWidget {
   const GovtFormsScreen({super.key});
@@ -134,36 +135,30 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
     final categories = ["Vehicle Forms List"];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
           child: Container(
             margin: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF3EDFF),
+              color: AppColors.primaryLight,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.arrow_back, color: Color(0xFF4A5578), size: 24),
+            child: const Icon(Icons.arrow_back, color: AppColors.textLight, size: 24),
           ),
         ),
         title: const Text(
           'Govt Forms',
           style: TextStyle(
-            color: Color(0xFF0C1427),
+            color: AppColors.textLight,
             fontSize: 22,
             fontWeight: FontWeight.bold,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey.shade200,
-            height: 1.0,
           ),
         ),
       ),
@@ -176,22 +171,25 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
               padding: const EdgeInsets.all(16.0),
               child: TextField(
                 controller: _searchController,
+                style: const TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
                   hintText: "Search forms...",
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                  hintStyle: const TextStyle(color: AppColors.textSecondary),
+                  prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
                   contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                  fillColor: AppColors.surface,
+                  filled: true,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: AppColors.border),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: AppColors.border),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFF222845)),
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: AppColors.primary, width: 2),
                   ),
                 ),
               ),
@@ -222,7 +220,7 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
 
                     // Official Portals Section
                     _buildSectionTitle("Official Parivahan / RTO Websites"),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     _buildPortalChips(),
                     const SizedBox(height: 32),
                   ],
@@ -246,7 +244,7 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF0C1427),
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 4),
@@ -254,7 +252,7 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
             width: 40,
             height: 3,
             decoration: BoxDecoration(
-              color: const Color(0xFF222845),
+              color: AppColors.accent,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -271,12 +269,12 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.grey.shade200),
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.border),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: AppColors.primary.withOpacity(0.02),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -302,18 +300,18 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF0C1427),
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     form["description"],
-                    style: const TextStyle(fontSize: 13, color: Colors.grey),
+                    style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.open_in_new, size: 18, color: Colors.grey),
+            const Icon(Icons.open_in_new, size: 18, color: AppColors.secondary),
           ],
         ),
       ),
@@ -336,23 +334,24 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
       children: portals.map((p) {
         return InkWell(
           onTap: () => _launchURL(p["url"]!),
+          borderRadius: BorderRadius.circular(24),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: const Color(0xFFF3EDFF),
+              color: AppColors.primary.withOpacity(0.08),
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: const Color(0xFFE0D4FF)),
+              border: Border.all(color: AppColors.primary.withOpacity(0.15)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.language, size: 16, color: Color(0xFF4A5578)),
+                const Icon(Icons.language, size: 16, color: AppColors.primary),
                 const SizedBox(width: 6),
                 Text(
                   p["name"]!,
                   style: const TextStyle(
-                    color: Color(0xFF4A5578),
-                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
                     fontSize: 13,
                   ),
                 ),

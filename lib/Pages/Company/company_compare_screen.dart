@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../Widget/Footer/footer.dart';
-import '../Profile/profile_screen.dart';
-import '../Favorite/favorite_screen.dart';
+import '../../Theme/app_colors.dart';
 
 class CompanyCompareScreen extends StatefulWidget {
   final List<Map<String, dynamic>> companies;
@@ -30,36 +29,30 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
           child: Container(
             margin: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF3EDFF),
+              color: AppColors.primaryLight,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.arrow_back, color: Color(0xFF4A5578), size: 24),
+            child: const Icon(Icons.arrow_back, color: AppColors.textLight, size: 24),
           ),
         ),
         title: const Text(
           'Compare Services',
           style: TextStyle(
-            color: Color(0xFF0C1427),
+            color: AppColors.textLight,
             fontSize: 22,
             fontWeight: FontWeight.bold,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey.shade200,
-            height: 1.0,
           ),
         ),
       ),
@@ -70,7 +63,7 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
         child: Padding(
           padding: const EdgeInsets.only(top: 40.0),
           child: widget.companies.isEmpty
-              ? const Center(child: Text("No companies selected for comparison."))
+              ? const Center(child: Text("No companies selected for comparison.", style: TextStyle(color: AppColors.textSecondary)))
               : SingleChildScrollView(
                   padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                   child: Center(
@@ -102,16 +95,16 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
     return Table(
       defaultColumnWidth: const FixedColumnWidth(160.0),
       border: TableBorder.all(
-        color: Colors.grey.shade300,
-        width: 1,
-        borderRadius: BorderRadius.circular(8),
+        color: AppColors.border,
+        width: 1.5,
+        borderRadius: BorderRadius.circular(12),
       ),
       children: [
         // Table Header
         TableRow(
-          decoration: BoxDecoration(
-            color: const Color(0xFFF8F9FA),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+          decoration: const BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
           ),
           children: [
             _buildTableCell("Feature", isHeader: true),
@@ -123,7 +116,7 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
         ...features.map((feature) {
           return TableRow(
             decoration: BoxDecoration(
-              color: feature == "Recommendation" ? const Color(0xFFF0F7FF) : Colors.white,
+              color: feature == "Recommendation" ? AppColors.primary.withOpacity(0.08) : AppColors.surface,
             ),
             children: [
               _buildTableCell(feature, isFeatureCol: true),
@@ -147,7 +140,7 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
           style: TextStyle(
             fontWeight: isHeader || isFeatureCol ? FontWeight.bold : FontWeight.normal,
             fontSize: isHeader ? 16 : 14,
-            color: isFeatureCol ? Colors.grey.shade700 : const Color(0xFF0C1427),
+            color: isFeatureCol ? AppColors.textSecondary : AppColors.textPrimary,
           ),
         ),
       ),
@@ -163,10 +156,10 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
           height: 80,
           width: 80,
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(8),
+            color: AppColors.primary.withOpacity(0.08),
+            borderRadius: BorderRadius.circular(12),
           ),
-          child: const Icon(Icons.business, size: 30, color: Colors.grey),
+          child: const Icon(Icons.business, size: 30, color: AppColors.primary),
         );
         break;
       case "Recommendation":
@@ -174,42 +167,43 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
           content = Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFF0066CC),
+              color: AppColors.primary,
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.star, color: Colors.white, size: 14),
+                Icon(Icons.star, color: AppColors.accent, size: 14),
                 SizedBox(width: 4),
                 Text(
                   "Best Choice",
-                  style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: AppColors.textLight, fontSize: 11, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
           );
         } else {
-          content = const Text("-");
+          content = const Text("-", style: TextStyle(color: AppColors.textSecondary));
         }
         break;
       case "Name":
-        content = Text(company["name"] ?? "Unknown", style: const TextStyle(fontWeight: FontWeight.bold));
+        content = Text(company["name"] ?? "Unknown", style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary));
         break;
       case "Category":
-        content = Text(company["category"] ?? "N/A");
+        content = Text(company["category"] ?? "N/A", style: const TextStyle(color: AppColors.textSecondary));
         break;
       case "Rating":
         content = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.star, size: 16, color: Color(0xFF222845)),
+            const Icon(Icons.star, size: 16, color: AppColors.accent),
             const SizedBox(width: 4),
-            Text(company["rating"] ?? "N/A", style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(company["rating"] ?? "N/A", style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
           ],
         );
         break;
       case "Distance":
-        content = Text(company["distance"] ?? "N/A");
+        content = Text(company["distance"] ?? "N/A", style: const TextStyle(color: AppColors.textPrimary));
         break;
       case "Status":
         final isOpen = company["isOpen"] == true;
@@ -222,7 +216,7 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
         );
         break;
       case "Address":
-        content = Text(company["location"] ?? "N/A", maxLines: 3, overflow: TextOverflow.ellipsis);
+        content = Text(company["location"] ?? "N/A", maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textSecondary, fontSize: 13));
         break;
       case "Action":
         content = ElevatedButton.icon(
@@ -230,8 +224,8 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
           icon: const Icon(Icons.phone, size: 16),
           label: const Text("Call Now"),
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF222845),
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.textLight,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
@@ -240,7 +234,7 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
         );
         break;
       default:
-        content = const Text("-");
+        content = const Text("-", style: TextStyle(color: AppColors.textSecondary));
     }
 
     return Padding(
