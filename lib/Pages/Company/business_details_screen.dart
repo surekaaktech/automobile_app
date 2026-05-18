@@ -167,7 +167,7 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
                               child: Icon(
                                 index < localRating ? Icons.star : Icons.star_border,
                                 size: 38,
-                                color: index < localRating ? AppColors.accent : AppColors.secondary.withOpacity(0.3),
+                                color: index < localRating ? AppColors.primary : AppColors.primary.withOpacity(0.3),
                               ),
                             ),
                           );
@@ -368,7 +368,7 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
                             ),
                             child: Icon(
                               isFav ? Icons.favorite : Icons.favorite_border,
-                              color: isFav ? AppColors.accentRed : AppColors.secondary,
+                              color: AppColors.primary,
                               size: 20,
                             ),
                           ),
@@ -387,7 +387,7 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        const Icon(Icons.location_on_outlined, size: 16, color: AppColors.secondary),
+                        const Icon(Icons.location_on_outlined, size: 16, color: AppColors.primary),
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(
@@ -416,7 +416,7 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.star, size: 16, color: AppColors.accent),
+                              const Icon(Icons.star, size: 16, color: AppColors.primary),
                               const SizedBox(width: 6),
                               Text(
                                 ratingVal.toStringAsFixed(1),
@@ -472,9 +472,9 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
                 childAspectRatio: 0.95,
                 children: [
                   _buildQuickActionTile(label: "Call", icon: Icons.phone_outlined, color: AppColors.primary, onTap: () {}),
-                  _buildQuickActionTile(label: "Map", icon: Icons.location_on_outlined, color: Colors.blueAccent, onTap: () {}),
-                  _buildQuickActionTile(label: "Web", icon: Icons.language, color: Colors.teal, onTap: () {}),
-                  _buildQuickActionTile(label: "Share", icon: Icons.share_outlined, color: Colors.purpleAccent, onTap: () {}),
+                  _buildQuickActionTile(label: "Map", icon: Icons.location_on_outlined, color: AppColors.primary, onTap: () {}),
+                  _buildQuickActionTile(label: "Web", icon: Icons.language, color: AppColors.primary, onTap: () {}),
+                  _buildQuickActionTile(label: "Share", icon: Icons.share_outlined, color: AppColors.primary, onTap: () {}),
                 ],
               ),
               const SizedBox(height: 20),
@@ -745,7 +745,7 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
                                           child: Icon(
                                             i < review["rating"] ? Icons.star : Icons.star_border,
                                             size: 13,
-                                            color: i < review["rating"] ? AppColors.accent : AppColors.secondary.withOpacity(0.3),
+                                            color: i < review["rating"] ? AppColors.primary : AppColors.primary.withOpacity(0.3),
                                           ),
                                         );
                                       }),

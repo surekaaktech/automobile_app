@@ -202,17 +202,15 @@ class _VehicleDocumentsScreenState extends State<VehicleDocumentsScreen> {
           // Header row
           Row(
             children: [
-              Container(
+               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: isUploaded
-                      ? AppColors.success.withOpacity(0.1)
-                      : AppColors.primary.withOpacity(0.1),
+                  color: AppColors.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   icon,
-                  color: isUploaded ? AppColors.success : AppColors.primary,
+                  color: AppColors.primary,
                   size: 24,
                 ),
               ),
@@ -270,7 +268,7 @@ class _VehicleDocumentsScreenState extends State<VehicleDocumentsScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.insert_drive_file_outlined, color: AppColors.textSecondary, size: 18),
+                  const Icon(Icons.insert_drive_file_outlined, color: AppColors.primary, size: 18),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
@@ -279,7 +277,7 @@ class _VehicleDocumentsScreenState extends State<VehicleDocumentsScreen> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const Icon(Icons.check_circle, color: AppColors.success, size: 18),
+                  const Icon(Icons.check_circle, color: AppColors.primary, size: 18),
                 ],
               ),
             ),
@@ -429,7 +427,7 @@ class _DocumentViewPageState extends State<_DocumentViewPage> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.verified, color: AppColors.success, size: 16),
+                  Icon(Icons.verified, color: AppColors.primary, size: 16),
                   SizedBox(width: 6),
                   Text(
                     "Verified & Uploaded",

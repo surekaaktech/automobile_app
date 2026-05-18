@@ -87,7 +87,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   decoration: InputDecoration(
                     hintText: "Search favorites...",
                     hintStyle: const TextStyle(color: AppColors.textSecondary),
-                    prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+                    prefixIcon: const Icon(Icons.search, color: AppColors.primary),
                     contentPadding: const EdgeInsets.symmetric(vertical: 14),
                     fillColor: AppColors.surface,
                     filled: true,
@@ -112,7 +112,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.favorite_border, size: 64, color: AppColors.secondary.withOpacity(0.4)),
+                          Icon(Icons.favorite_border, size: 64, color: AppColors.primary.withOpacity(0.4)),
                           const SizedBox(height: 16),
                           Text(
                             allFavorites.isEmpty ? "No favorites yet" : "No matches found",
@@ -192,7 +192,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                       FavoritesState.toggleFavorite(company);
                                     });
                                   },
-                                  icon: const Icon(Icons.favorite, color: AppColors.accentRed),
+                                  icon: const Icon(Icons.favorite, color: AppColors.primary),
                                 ),
                               ],
                             ),

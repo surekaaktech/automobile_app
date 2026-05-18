@@ -205,10 +205,10 @@ class _InsuranceManagementScreenState extends State<InsuranceManagementScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.warning.withOpacity(0.1),
+                color: AppColors.primary.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.timer_outlined, color: AppColors.warning),
+              child: const Icon(Icons.timer_outlined, color: AppColors.primary),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -232,7 +232,7 @@ class _InsuranceManagementScreenState extends State<InsuranceManagementScreen> {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.warning),
+            const Icon(Icons.chevron_right, color: AppColors.primary),
           ],
         ),
       ),
@@ -284,7 +284,7 @@ class _InsuranceManagementScreenState extends State<InsuranceManagementScreen> {
         ),
         child: Column(
           children: [
-            Icon(icon, color: color, size: 28),
+            Icon(icon, color: AppColors.primary, size: 28),
             const SizedBox(height: 12),
             Text(
               title,
@@ -314,9 +314,9 @@ class _InsuranceManagementScreenState extends State<InsuranceManagementScreen> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.border),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.picture_as_pdf_outlined,
-              color: _isDocumentUploaded ? AppColors.success : AppColors.textSecondary,
+              color: AppColors.primary,
               size: 24,
             ),
           ),
@@ -460,7 +460,7 @@ class _DocumentViewPageState extends State<_DocumentViewPage> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: const [
-                    Icon(Icons.verified, color: AppColors.success, size: 16),
+                    Icon(Icons.verified, color: AppColors.primary, size: 16),
                     SizedBox(width: 6),
                     Text("Verified & Uploaded", style: TextStyle(color: AppColors.success, fontSize: 12, fontWeight: FontWeight.bold)),
                   ],

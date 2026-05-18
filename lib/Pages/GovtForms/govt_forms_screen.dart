@@ -175,7 +175,7 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
                 decoration: InputDecoration(
                   hintText: "Search forms...",
                   hintStyle: const TextStyle(color: AppColors.textSecondary),
-                  prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+                  prefixIcon: const Icon(Icons.search, color: AppColors.primary),
                   contentPadding: const EdgeInsets.symmetric(vertical: 14),
                   fillColor: AppColors.surface,
                   filled: true,
@@ -285,10 +285,10 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: AppColors.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(form["icon"] as IconData, color: color, size: 26),
+              child: Icon(form["icon"] as IconData, color: AppColors.primary, size: 26),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -311,7 +311,7 @@ class _GovtFormsScreenState extends State<GovtFormsScreen> {
                 ],
               ),
             ),
-            const Icon(Icons.open_in_new, size: 18, color: AppColors.secondary),
+            const Icon(Icons.open_in_new, size: 18, color: AppColors.primary),
           ],
         ),
       ),

@@ -42,7 +42,7 @@ class LoanScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const CustomFooter(currentIndex: -1),
+      bottomNavigationBar: const CustomFooter(currentIndex:-1),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -155,10 +155,10 @@ class LoanScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: AppColors.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: color, size: 28),
+              child: Icon(icon, color: AppColors.primary, size: 28),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -197,7 +197,7 @@ class LoanScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.open_in_new, size: 18, color: AppColors.secondary),
+            const Icon(Icons.open_in_new, size: 18, color: AppColors.primary),
           ],
         ),
       ),

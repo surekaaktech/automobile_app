@@ -167,7 +167,7 @@ class _ServiceHistoryDetailsScreenState extends State<ServiceHistoryDetailsScree
                 color: severityColor.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(getIcon(), color: severityColor),
+              child: Icon(getIcon(), color: AppColors.primary),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -186,7 +186,7 @@ class _ServiceHistoryDetailsScreenState extends State<ServiceHistoryDetailsScree
                 ],
               ),
             ),
-            Icon(Icons.chevron_right, color: severityColor),
+            Icon(Icons.chevron_right, color: AppColors.primary),
           ],
         ),
       ),
@@ -322,7 +322,7 @@ class _ServiceHistoryDetailsScreenState extends State<ServiceHistoryDetailsScree
                             padding: const EdgeInsets.only(bottom: 8.0),
                             child: Row(
                               children: [
-                                const Icon(Icons.check_circle_outline, color: AppColors.textSecondary, size: 14),
+                                const Icon(Icons.check_circle_outline, color: AppColors.primary, size: 14),
                                 const SizedBox(width: 8),
                                 Text(item, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                               ],

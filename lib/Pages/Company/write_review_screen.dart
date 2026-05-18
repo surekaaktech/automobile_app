@@ -134,17 +134,17 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 6),
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: isSelected ? AppColors.accent.withOpacity(0.12) : AppColors.background,
+                          color: isSelected ? AppColors.primary.withOpacity(0.12) : AppColors.background,
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: isSelected ? AppColors.accent : AppColors.border,
+                            color: isSelected ? AppColors.primary : AppColors.border,
                             width: 1.5,
                           ),
                         ),
                         child: Icon(
                           Icons.star,
                           size: 32,
-                          color: isSelected ? AppColors.accent : AppColors.secondary.withOpacity(0.4),
+                          color: isSelected ? AppColors.primary : AppColors.primary.withOpacity(0.4),
                         ),
                       ),
                     );

@@ -57,7 +57,7 @@ class MapScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Icon(Icons.location_on, color: AppColors.error, size: 50),
+                const Icon(Icons.location_on, color: AppColors.primary, size: 50),
               ],
             ),
           ),

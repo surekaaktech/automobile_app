@@ -58,16 +58,16 @@ class CustomFooter extends StatelessWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
             selectedItemColor: AppColors.primary,
-            unselectedItemColor: AppColors.secondary,
+            unselectedItemColor: currentIndex < 0 ? AppColors.primary : AppColors.secondary,
             selectedLabelStyle: TextStyle(
               fontWeight: currentIndex < 0 ? FontWeight.w600 : FontWeight.bold,
               fontSize: currentIndex < 0 ? 11 : 13,
               color: AppColors.primary,
             ),
-            unselectedLabelStyle: const TextStyle(
+            unselectedLabelStyle: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 11,
-              color: AppColors.secondary,
+              color: currentIndex < 0 ? AppColors.primary : AppColors.secondary,
             ),
             iconSize: 26,
             items: [

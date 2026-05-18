@@ -173,7 +173,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.location_on_outlined, size: 15, color: AppColors.secondary),
+                      const Icon(Icons.location_on_outlined, size: 15, color: AppColors.primary),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
@@ -207,7 +207,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.star, size: 13, color: AppColors.accent),
+                            const Icon(Icons.star, size: 13, color: AppColors.primary),
                             const SizedBox(width: 4),
                             Text(
                               company["rating"],
@@ -284,7 +284,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                     ),
                     child: Icon(
                       isFav ? Icons.favorite : Icons.favorite_border,
-                      color: isFav ? AppColors.accentRed : AppColors.secondary,
+                      color: AppColors.primary,
                       size: 18,
                     ),
                   ),
@@ -597,7 +597,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
               // Decorative Scrollbar / Line
               Row(
                 children: [
-                  const Icon(Icons.arrow_left, color: AppColors.secondary, size: 16),
+                   const Icon(Icons.arrow_left, color: AppColors.primary, size: 16),
                   Expanded(
                     child: Container(
                       height: 3,
@@ -607,7 +607,7 @@ class _CompanyListingScreenState extends State<CompanyListingScreen> {
                       ),
                     ),
                   ),
-                  const Icon(Icons.arrow_right, color: AppColors.secondary, size: 16),
+                   const Icon(Icons.arrow_right, color: AppColors.primary, size: 16),
                 ],
               ),
               const SizedBox(height: 18),

@@ -155,7 +155,7 @@ class _MaintenanceReminderScreenState extends State<MaintenanceReminderScreen> {
                 ),
                 child: Icon(
                   MaintenanceReminderScreen.globalCondition == 0 ? Icons.check_circle_outline : Icons.notifications_active, 
-                  color: activeColor
+                  color: AppColors.primary
                 ),
               ),
               Container(
@@ -309,14 +309,14 @@ class _MaintenanceReminderScreenState extends State<MaintenanceReminderScreen> {
         children: [
           Icon(
             isOk ? Icons.settings_outlined : Icons.warning_amber_rounded, 
-            color: isOk ? AppColors.textSecondary : AppColors.warning, 
+            color: AppColors.primary, 
             size: 20
           ),
           const SizedBox(width: 12),
           Expanded(child: Text(title, style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 14))),
           Icon(
             isOk ? Icons.check_circle : Icons.error, 
-            color: isOk ? AppColors.success : AppColors.warning, 
+            color: AppColors.primary, 
             size: 20
           ),
         ],

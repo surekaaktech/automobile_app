@@ -120,7 +120,7 @@ class ServiceHistoryScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: AppColors.border),
                     ),
-                    child: Icon(icon, color: AppColors.textSecondary, size: 24),
+                    child: Icon(icon, color: AppColors.primary, size: 24),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -247,7 +247,7 @@ class ServiceHistoryScreen extends StatelessWidget {
                       const SizedBox(width: 4),
                       Icon(
                         Icons.chevron_right,
-                        color: AppColors.textSecondary.withOpacity(0.5),
+                        color: AppColors.primary,
                         size: 16,
                       ),
                     ],

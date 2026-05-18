@@ -173,7 +173,7 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.star, color: AppColors.accent, size: 14),
+                Icon(Icons.star, color: AppColors.primary, size: 14),
                 SizedBox(width: 4),
                 Text(
                   "Best Choice",
@@ -196,7 +196,7 @@ class _CompanyCompareScreenState extends State<CompanyCompareScreen> {
         content = Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.star, size: 16, color: AppColors.accent),
+            const Icon(Icons.star, size: 16, color: AppColors.primary),
             const SizedBox(width: 4),
             Text(company["rating"] ?? "N/A", style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
           ],
