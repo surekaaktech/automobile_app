@@ -3,6 +3,10 @@ import '../../Theme/app_colors.dart';
 import '../../Widget/Footer/footer.dart';
 import '../Favorite/favorite_screen.dart';
 import '../Login/login_page.dart';
+import '../Maintenance/maintenance_reminder_screen.dart';
+import '../ServiceHistory/service_history_screen.dart';
+import '../VehicleDocuments/vehicle_documents_screen.dart';
+import '../InsuranceManagement/insurance_management_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -212,22 +216,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _buildProfileOption(
               icon: Icons.history,
               title: 'Service History',
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ServiceHistoryScreen()),
+                );
+              },
             ),
             _buildProfileOption(
               icon: Icons.notifications_none,
               title: 'Maintenance Reminders',
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MaintenanceReminderScreen()),
+                );
+              },
             ),
             _buildProfileOption(
               icon: Icons.description_outlined,
               title: 'Vehicle Documentation',
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const VehicleDocumentsScreen()),
+                );
+              },
             ),
             _buildProfileOption(
               icon: Icons.security_outlined,
               title: 'Insurance Management',
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const InsuranceManagementScreen()),
+                );
+              },
             ),
 
             const SizedBox(height: 36),

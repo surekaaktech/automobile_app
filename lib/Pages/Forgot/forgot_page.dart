@@ -10,49 +10,64 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  
-  String? _errorMessage;
+  bool _obscureNew = true;
+  bool _obscureConfirm = true;
+  String? _emailError;
+  String? _passwordError;
+
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$').hasMatch(email);
+  }
 
   void _handleReset() {
-    final username = _usernameController.text.trim();
+    final email = _emailController.text.trim();
     final newPassword = _newPasswordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
-
-    if (username.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) {
-      setState(() {
-        _errorMessage = 'Please fill in all fields';
-      });
-      return;
-    }
-
-    if (newPassword != confirmPassword) {
-      setState(() {
-        _errorMessage = 'Passwords do not match';
-      });
-      return;
-    }
+    bool hasError = false;
 
     setState(() {
-      _errorMessage = null;
+      if (email.isEmpty) {
+        _emailError = 'Email is required';
+        hasError = true;
+      } else if (!_isValidEmail(email)) {
+        _emailError = 'Enter a valid email (e.g. user@example.com)';
+        hasError = true;
+      } else {
+        _emailError = null;
+      }
+
+      if (newPassword.isEmpty) {
+        _passwordError = 'Password is required';
+        hasError = true;
+      } else if (newPassword.length < 6) {
+        _passwordError = 'Password must be at least 6 characters';
+        hasError = true;
+      } else if (newPassword != confirmPassword) {
+        _passwordError = 'Passwords do not match';
+        hasError = true;
+      } else {
+        _passwordError = null;
+      }
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Password updated successfully!'),
-        backgroundColor: AppColors.success,
-        duration: Duration(seconds: 2),
-      ),
-    );
-
-    Navigator.pushReplacementNamed(context, AppRoutes.login);
+    if (!hasError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password updated successfully!'),
+          backgroundColor: AppColors.success,
+          duration: Duration(seconds: 2),
+        ),
+      );
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
+    }
   }
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _emailController.dispose();
     _newPasswordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -64,6 +79,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     required IconData icon,
     required TextEditingController controller,
     bool isPassword = false,
+    bool obscure = true,
+    VoidCallback? onToggleObscure,
+    String? errorText,
+    TextInputType? keyboardType,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,14 +99,26 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         const SizedBox(height: 8),
         TextField(
           controller: controller,
-          obscureText: isPassword,
+          obscureText: isPassword ? obscure : false,
+          keyboardType: keyboardType,
           style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: AppColors.primary, size: 20),
+            suffixIcon: isPassword
+                ? IconButton(
+                    icon: Icon(
+                      obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      color: AppColors.textSecondary,
+                      size: 20,
+                    ),
+                    onPressed: onToggleObscure,
+                  )
+                : null,
             hintText: hintText,
             hintStyle: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.normal),
             fillColor: AppColors.background,
             filled: true,
+            errorText: errorText,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -95,7 +126,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide.none,
+              borderSide: errorText != null
+                  ? const BorderSide(color: AppColors.accentRed, width: 1.5)
+                  : BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -111,6 +144,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           // 🌌 Deep Forest Ambient Background
@@ -155,8 +189,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           // 📄 Main Content
           SafeArea(
             child: Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 420),
                   child: Column(
@@ -250,35 +286,41 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             ),
                             const SizedBox(height: 28),
 
-                            if (_errorMessage != null)
+                            if (_emailError != null || _passwordError != null)
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 16.0),
                                 child: Text(
-                                  _errorMessage!,
+                                  _emailError ?? _passwordError ?? '',
                                   style: const TextStyle(color: AppColors.accentRed, fontSize: 13, fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.left,
                                 ),
                               ),
 
                             _buildTextField(
-                              label: 'USERNAME / EMAIL',
-                              hintText: 'Enter username or email',
-                              icon: Icons.person_outline,
-                              controller: _usernameController,
+                              label: 'EMAIL',
+                              hintText: 'Enter your registered email',
+                              icon: Icons.email_outlined,
+                              controller: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              errorText: _emailError,
                             ),
                             _buildTextField(
                               label: 'NEW PASSWORD',
-                              hintText: 'Enter secure password',
+                              hintText: 'Min. 6 characters',
                               icon: Icons.lock_outline,
                               controller: _newPasswordController,
                               isPassword: true,
+                              obscure: _obscureNew,
+                              onToggleObscure: () => setState(() => _obscureNew = !_obscureNew),
+                              errorText: _passwordError,
                             ),
                             _buildTextField(
                               label: 'CONFIRM NEW PASSWORD',
-                              hintText: 'Confirm secure password',
+                              hintText: 'Re-enter new password',
                               icon: Icons.lock_outline,
                               controller: _confirmPasswordController,
                               isPassword: true,
+                              obscure: _obscureConfirm,
+                              onToggleObscure: () => setState(() => _obscureConfirm = !_obscureConfirm),
                             ),
                             const SizedBox(height: 12),
 
@@ -346,6 +388,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ],
                   ),
                 ),
+              ),
               ),
             ),
           ),

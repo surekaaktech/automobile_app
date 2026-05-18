@@ -18,97 +18,107 @@ class MenuScreen extends StatelessWidget {
         borderRadius: BorderRadius.zero,
       ),
       child: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 100.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
+          children: [
+            // Scrollable menu content
+            SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 100.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.directions_car, color: AppColors.textLight, size: 24),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: const BoxDecoration(
+                              color: AppColors.primary,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.directions_car, color: AppColors.textLight, size: 24),
+                          ),
+                          const SizedBox(width: 12),
+                          const Text(
+                            'AutoFind',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 12),
-                      const Text(
-                        'AutoFind',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(Icons.close, color: AppColors.primary, size: 24),
                         ),
                       ),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primary.withOpacity(0.3)),
-                        borderRadius: BorderRadius.circular(8),
+                  const SizedBox(height: 40),
+                  const Text(
+                    'Quick Actions',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildMenuCard(
+                          Icons.attach_money,
+                          "Loan",
+                          onTap: () {
+                            Navigator.pop(context);
+                            Get.toNamed(AppRoutes.loan);
+                          },
+                        ),
                       ),
-                      child: const Icon(Icons.close, color: AppColors.primary, size: 24),
-                    ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: _buildMenuCard(
+                          Icons.description_outlined,
+                          "Govt\nForms",
+                          onTap: () {
+                            Navigator.pop(context);
+                            Get.toNamed(AppRoutes.govtForms);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: _buildMenuCard(
+                          Icons.menu_book_outlined,
+                          "Blog",
+                          onTap: () {},
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
-              const Text(
-                'Quick Actions',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildMenuCard(
-                      Icons.attach_money,
-                      "Loan",
-                      onTap: () {
-                        Navigator.pop(context);
-                        Get.toNamed(AppRoutes.loan);
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: _buildMenuCard(
-                      Icons.description_outlined,
-                      "Govt\nForms",
-                      onTap: () {
-                        Navigator.pop(context);
-                        Get.toNamed(AppRoutes.govtForms);
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: _buildMenuCard(
-                      Icons.menu_book_outlined,
-                      "Blog",
-                      onTap: () {},
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
+            ),
+
+            // Pinned Login/Register button at the bottom
+            Positioned(
+              left: 24,
+              right: 24,
+              bottom: 24,
+              child: SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
                   onPressed: () {
-                    // Pop drawer before navigating
                     Navigator.pop(context);
                     Navigator.pushNamed(context, '/login');
                   },
@@ -125,8 +135,8 @@ class MenuScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

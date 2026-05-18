@@ -10,32 +10,53 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _obscurePassword = true;
+  String? _emailError;
+  String? _passwordError;
 
-  String? _errorMessage;
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$').hasMatch(email);
+  }
 
   void _handleLogin() {
-    final username = _usernameController.text.trim();
+    final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
-
-    if (username.isEmpty || password.isEmpty) {
-      setState(() {
-        _errorMessage = 'Please enter both username and password';
-      });
-      return;
-    }
+    bool hasError = false;
 
     setState(() {
-      _errorMessage = null;
+      // Email validation
+      if (email.isEmpty) {
+        _emailError = 'Email is required';
+        hasError = true;
+      } else if (!_isValidEmail(email)) {
+        _emailError = 'Enter a valid email (e.g. user@example.com)';
+        hasError = true;
+      } else {
+        _emailError = null;
+      }
+
+      // Password validation
+      if (password.isEmpty) {
+        _passwordError = 'Password is required';
+        hasError = true;
+      } else if (password.length < 6) {
+        _passwordError = 'Password must be at least 6 characters';
+        hasError = true;
+      } else {
+        _passwordError = null;
+      }
     });
 
-    Navigator.pushReplacementNamed(context, AppRoutes.home);
+    if (!hasError) {
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
+    }
   }
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -43,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           // 🌌 Deep Forest Ambient Background
@@ -84,11 +106,15 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
 
+
+
           // 📄 Main Content
           SafeArea(
             child: Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 420),
                   child: Column(
@@ -183,19 +209,18 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(height: 28),
 
                             // Error text
-                            if (_errorMessage != null)
+                            if (_emailError != null || _passwordError != null)
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 16.0),
                                 child: Text(
-                                  _errorMessage!,
+                                  _emailError ?? _passwordError ?? '',
                                   style: const TextStyle(color: AppColors.accentRed, fontSize: 13, fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.left,
                                 ),
                               ),
 
-                            // Input Label - Username
+                            // Email label
                             const Text(
-                              'USERNAME',
+                              'EMAIL',
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w800,
@@ -205,16 +230,18 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             const SizedBox(height: 8),
 
-                            // Username Input Box
+                            // Email Input Box
                             TextField(
-                              controller: _usernameController,
+                              controller: _emailController,
+                              keyboardType: TextInputType.emailAddress,
                               style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
                               decoration: InputDecoration(
-                                prefixIcon: const Icon(Icons.alternate_email, color: AppColors.primary, size: 20),
-                                hintText: 'Enter username',
+                                prefixIcon: const Icon(Icons.email_outlined, color: AppColors.primary, size: 20),
+                                hintText: 'Enter your email',
                                 hintStyle: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.normal),
                                 fillColor: AppColors.background,
                                 filled: true,
+                                errorText: _emailError,
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
@@ -222,7 +249,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide.none,
+                                  borderSide: _emailError != null
+                                      ? const BorderSide(color: AppColors.accentRed, width: 1.5)
+                                      : BorderSide.none,
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
@@ -232,7 +261,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             const SizedBox(height: 20),
 
-                            // Input Label - Password
+                            // Password label
                             const Text(
                               'PASSWORD',
                               style: TextStyle(
@@ -247,14 +276,23 @@ class _LoginPageState extends State<LoginPage> {
                             // Password Input Box
                             TextField(
                               controller: _passwordController,
-                              obscureText: true,
+                              obscureText: _obscurePassword,
                               style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(Icons.lock_outline, color: AppColors.primary, size: 20),
-                                hintText: 'Enter password',
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                                    color: AppColors.textSecondary,
+                                    size: 20,
+                                  ),
+                                  onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                                ),
+                                hintText: 'Min. 6 characters',
                                 hintStyle: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.normal),
                                 fillColor: AppColors.background,
                                 filled: true,
+                                errorText: _passwordError,
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
@@ -262,7 +300,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide.none,
+                                  borderSide: _passwordError != null
+                                      ? const BorderSide(color: AppColors.accentRed, width: 1.5)
+                                      : BorderSide.none,
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
@@ -360,6 +400,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
+              ),
               ),
             ),
           ),
